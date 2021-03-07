@@ -42,8 +42,8 @@ type MicroserviceSpec struct {
 
 // Env defines enviroment varialbles for the microservices
 type Env struct {
-	name  string
-	value string
+	Name  string
+	Value string
 }
 
 // MicroserviceTopology defines the topology for a service
@@ -54,9 +54,9 @@ type MicroserviceTopology struct {
 
 // Proxy defines some proxys for the service
 type Proxy struct {
-	service string
-	host    string
-	ports   ProxyPorts
+	Service string
+	Host    string
+	Ports   ProxyPorts
 }
 
 // ProxyPorts defines the proxy ports

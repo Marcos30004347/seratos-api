@@ -19,3 +19,5 @@ limitations under the License.
 package v1beta1
 
 type FooExpansion interface{}
+
+type MicroserviceExpansion interface{}

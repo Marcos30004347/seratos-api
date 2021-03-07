@@ -25,3 +25,11 @@ type FooListerExpansion interface{}
 // FooNamespaceListerExpansion allows custom methods to be added to
 // FooNamespaceLister.
 type FooNamespaceListerExpansion interface{}
+
+// MicroserviceListerExpansion allows custom methods to be added to
+// MicroserviceLister.
+type MicroserviceListerExpansion interface{}
+
+// MicroserviceNamespaceListerExpansion allows custom methods to be added to
+// MicroserviceNamespaceLister.
+type MicroserviceNamespaceListerExpansion interface{}

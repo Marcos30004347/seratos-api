@@ -19,3 +19,5 @@ limitations under the License.
 package internalversion
 
 type FooExpansion interface{}
+
+type MicroserviceExpansion interface{}

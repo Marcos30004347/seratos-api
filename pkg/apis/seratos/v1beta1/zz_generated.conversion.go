@@ -35,6 +35,16 @@ func init() {
 // RegisterConversions adds conversion functions to the given scheme.
 // Public to allow building arbitrary schemes.
 func RegisterConversions(s *runtime.Scheme) error {
+	if err := s.AddGeneratedConversionFunc((*Env)(nil), (*seratos.Env)(nil), func(a, b interface{}, scope conversion.Scope) error {
+		return Convert_v1beta1_Env_To_seratos_Env(a.(*Env), b.(*seratos.Env), scope)
+	}); err != nil {
+		return err
+	}
+	if err := s.AddGeneratedConversionFunc((*seratos.Env)(nil), (*Env)(nil), func(a, b interface{}, scope conversion.Scope) error {
+		return Convert_seratos_Env_To_v1beta1_Env(a.(*seratos.Env), b.(*Env), scope)
+	}); err != nil {
+		return err
+	}
 	if err := s.AddGeneratedConversionFunc((*Foo)(nil), (*seratos.Foo)(nil), func(a, b interface{}, scope conversion.Scope) error {
 		return Convert_v1beta1_Foo_To_seratos_Foo(a.(*Foo), b.(*seratos.Foo), scope)
 	}); err != nil {
@@ -55,7 +65,99 @@ func RegisterConversions(s *runtime.Scheme) error {
 	}); err != nil {
 		return err
 	}
+	if err := s.AddGeneratedConversionFunc((*Microservice)(nil), (*seratos.Microservice)(nil), func(a, b interface{}, scope conversion.Scope) error {
+		return Convert_v1beta1_Microservice_To_seratos_Microservice(a.(*Microservice), b.(*seratos.Microservice), scope)
+	}); err != nil {
+		return err
+	}
+	if err := s.AddGeneratedConversionFunc((*seratos.Microservice)(nil), (*Microservice)(nil), func(a, b interface{}, scope conversion.Scope) error {
+		return Convert_seratos_Microservice_To_v1beta1_Microservice(a.(*seratos.Microservice), b.(*Microservice), scope)
+	}); err != nil {
+		return err
+	}
+	if err := s.AddGeneratedConversionFunc((*MicroserviceList)(nil), (*seratos.MicroserviceList)(nil), func(a, b interface{}, scope conversion.Scope) error {
+		return Convert_v1beta1_MicroserviceList_To_seratos_MicroserviceList(a.(*MicroserviceList), b.(*seratos.MicroserviceList), scope)
+	}); err != nil {
+		return err
+	}
+	if err := s.AddGeneratedConversionFunc((*seratos.MicroserviceList)(nil), (*MicroserviceList)(nil), func(a, b interface{}, scope conversion.Scope) error {
+		return Convert_seratos_MicroserviceList_To_v1beta1_MicroserviceList(a.(*seratos.MicroserviceList), b.(*MicroserviceList), scope)
+	}); err != nil {
+		return err
+	}
+	if err := s.AddGeneratedConversionFunc((*MicroserviceSecutiry)(nil), (*seratos.MicroserviceSecutiry)(nil), func(a, b interface{}, scope conversion.Scope) error {
+		return Convert_v1beta1_MicroserviceSecutiry_To_seratos_MicroserviceSecutiry(a.(*MicroserviceSecutiry), b.(*seratos.MicroserviceSecutiry), scope)
+	}); err != nil {
+		return err
+	}
+	if err := s.AddGeneratedConversionFunc((*seratos.MicroserviceSecutiry)(nil), (*MicroserviceSecutiry)(nil), func(a, b interface{}, scope conversion.Scope) error {
+		return Convert_seratos_MicroserviceSecutiry_To_v1beta1_MicroserviceSecutiry(a.(*seratos.MicroserviceSecutiry), b.(*MicroserviceSecutiry), scope)
+	}); err != nil {
+		return err
+	}
+	if err := s.AddGeneratedConversionFunc((*MicroserviceSpec)(nil), (*seratos.MicroserviceSpec)(nil), func(a, b interface{}, scope conversion.Scope) error {
+		return Convert_v1beta1_MicroserviceSpec_To_seratos_MicroserviceSpec(a.(*MicroserviceSpec), b.(*seratos.MicroserviceSpec), scope)
+	}); err != nil {
+		return err
+	}
+	if err := s.AddGeneratedConversionFunc((*seratos.MicroserviceSpec)(nil), (*MicroserviceSpec)(nil), func(a, b interface{}, scope conversion.Scope) error {
+		return Convert_seratos_MicroserviceSpec_To_v1beta1_MicroserviceSpec(a.(*seratos.MicroserviceSpec), b.(*MicroserviceSpec), scope)
+	}); err != nil {
+		return err
+	}
+	if err := s.AddGeneratedConversionFunc((*MicroserviceTopology)(nil), (*seratos.MicroserviceTopology)(nil), func(a, b interface{}, scope conversion.Scope) error {
+		return Convert_v1beta1_MicroserviceTopology_To_seratos_MicroserviceTopology(a.(*MicroserviceTopology), b.(*seratos.MicroserviceTopology), scope)
+	}); err != nil {
+		return err
+	}
+	if err := s.AddGeneratedConversionFunc((*seratos.MicroserviceTopology)(nil), (*MicroserviceTopology)(nil), func(a, b interface{}, scope conversion.Scope) error {
+		return Convert_seratos_MicroserviceTopology_To_v1beta1_MicroserviceTopology(a.(*seratos.MicroserviceTopology), b.(*MicroserviceTopology), scope)
+	}); err != nil {
+		return err
+	}
+	if err := s.AddGeneratedConversionFunc((*Proxy)(nil), (*seratos.Proxy)(nil), func(a, b interface{}, scope conversion.Scope) error {
+		return Convert_v1beta1_Proxy_To_seratos_Proxy(a.(*Proxy), b.(*seratos.Proxy), scope)
+	}); err != nil {
+		return err
+	}
+	if err := s.AddGeneratedConversionFunc((*seratos.Proxy)(nil), (*Proxy)(nil), func(a, b interface{}, scope conversion.Scope) error {
+		return Convert_seratos_Proxy_To_v1beta1_Proxy(a.(*seratos.Proxy), b.(*Proxy), scope)
+	}); err != nil {
+		return err
+	}
+	if err := s.AddGeneratedConversionFunc((*ProxyPorts)(nil), (*seratos.ProxyPorts)(nil), func(a, b interface{}, scope conversion.Scope) error {
+		return Convert_v1beta1_ProxyPorts_To_seratos_ProxyPorts(a.(*ProxyPorts), b.(*seratos.ProxyPorts), scope)
+	}); err != nil {
+		return err
+	}
+	if err := s.AddGeneratedConversionFunc((*seratos.ProxyPorts)(nil), (*ProxyPorts)(nil), func(a, b interface{}, scope conversion.Scope) error {
+		return Convert_seratos_ProxyPorts_To_v1beta1_ProxyPorts(a.(*seratos.ProxyPorts), b.(*ProxyPorts), scope)
+	}); err != nil {
+		return err
+	}
 	return nil
+}
+
+func autoConvert_v1beta1_Env_To_seratos_Env(in *Env, out *seratos.Env, s conversion.Scope) error {
+	out.Name = in.Name
+	out.Value = in.Value
+	return nil
+}
+
+// Convert_v1beta1_Env_To_seratos_Env is an autogenerated conversion function.
+func Convert_v1beta1_Env_To_seratos_Env(in *Env, out *seratos.Env, s conversion.Scope) error {
+	return autoConvert_v1beta1_Env_To_seratos_Env(in, out, s)
+}
+
+func autoConvert_seratos_Env_To_v1beta1_Env(in *seratos.Env, out *Env, s conversion.Scope) error {
+	out.Name = in.Name
+	out.Value = in.Value
+	return nil
+}
+
+// Convert_seratos_Env_To_v1beta1_Env is an autogenerated conversion function.
+func Convert_seratos_Env_To_v1beta1_Env(in *seratos.Env, out *Env, s conversion.Scope) error {
+	return autoConvert_seratos_Env_To_v1beta1_Env(in, out, s)
 }
 
 func autoConvert_v1beta1_Foo_To_seratos_Foo(in *Foo, out *seratos.Foo, s conversion.Scope) error {
@@ -98,4 +200,174 @@ func autoConvert_seratos_FooList_To_v1beta1_FooList(in *seratos.FooList, out *Fo
 // Convert_seratos_FooList_To_v1beta1_FooList is an autogenerated conversion function.
 func Convert_seratos_FooList_To_v1beta1_FooList(in *seratos.FooList, out *FooList, s conversion.Scope) error {
 	return autoConvert_seratos_FooList_To_v1beta1_FooList(in, out, s)
+}
+
+func autoConvert_v1beta1_Microservice_To_seratos_Microservice(in *Microservice, out *seratos.Microservice, s conversion.Scope) error {
+	out.ObjectMeta = in.ObjectMeta
+	if err := Convert_v1beta1_MicroserviceSpec_To_seratos_MicroserviceSpec(&in.Spec, &out.Spec, s); err != nil {
+		return err
+	}
+	return nil
+}
+
+// Convert_v1beta1_Microservice_To_seratos_Microservice is an autogenerated conversion function.
+func Convert_v1beta1_Microservice_To_seratos_Microservice(in *Microservice, out *seratos.Microservice, s conversion.Scope) error {
+	return autoConvert_v1beta1_Microservice_To_seratos_Microservice(in, out, s)
+}
+
+func autoConvert_seratos_Microservice_To_v1beta1_Microservice(in *seratos.Microservice, out *Microservice, s conversion.Scope) error {
+	out.ObjectMeta = in.ObjectMeta
+	if err := Convert_seratos_MicroserviceSpec_To_v1beta1_MicroserviceSpec(&in.Spec, &out.Spec, s); err != nil {
+		return err
+	}
+	return nil
+}
+
+// Convert_seratos_Microservice_To_v1beta1_Microservice is an autogenerated conversion function.
+func Convert_seratos_Microservice_To_v1beta1_Microservice(in *seratos.Microservice, out *Microservice, s conversion.Scope) error {
+	return autoConvert_seratos_Microservice_To_v1beta1_Microservice(in, out, s)
+}
+
+func autoConvert_v1beta1_MicroserviceList_To_seratos_MicroserviceList(in *MicroserviceList, out *seratos.MicroserviceList, s conversion.Scope) error {
+	out.ListMeta = in.ListMeta
+	out.Items = *(*[]seratos.Microservice)(unsafe.Pointer(&in.Items))
+	return nil
+}
+
+// Convert_v1beta1_MicroserviceList_To_seratos_MicroserviceList is an autogenerated conversion function.
+func Convert_v1beta1_MicroserviceList_To_seratos_MicroserviceList(in *MicroserviceList, out *seratos.MicroserviceList, s conversion.Scope) error {
+	return autoConvert_v1beta1_MicroserviceList_To_seratos_MicroserviceList(in, out, s)
+}
+
+func autoConvert_seratos_MicroserviceList_To_v1beta1_MicroserviceList(in *seratos.MicroserviceList, out *MicroserviceList, s conversion.Scope) error {
+	out.ListMeta = in.ListMeta
+	out.Items = *(*[]Microservice)(unsafe.Pointer(&in.Items))
+	return nil
+}
+
+// Convert_seratos_MicroserviceList_To_v1beta1_MicroserviceList is an autogenerated conversion function.
+func Convert_seratos_MicroserviceList_To_v1beta1_MicroserviceList(in *seratos.MicroserviceList, out *MicroserviceList, s conversion.Scope) error {
+	return autoConvert_seratos_MicroserviceList_To_v1beta1_MicroserviceList(in, out, s)
+}
+
+func autoConvert_v1beta1_MicroserviceSecutiry_To_seratos_MicroserviceSecutiry(in *MicroserviceSecutiry, out *seratos.MicroserviceSecutiry, s conversion.Scope) error {
+	out.Policy = in.Policy
+	out.Blocks = *(*[]string)(unsafe.Pointer(&in.Blocks))
+	out.Allow = *(*[]string)(unsafe.Pointer(&in.Allow))
+	return nil
+}
+
+// Convert_v1beta1_MicroserviceSecutiry_To_seratos_MicroserviceSecutiry is an autogenerated conversion function.
+func Convert_v1beta1_MicroserviceSecutiry_To_seratos_MicroserviceSecutiry(in *MicroserviceSecutiry, out *seratos.MicroserviceSecutiry, s conversion.Scope) error {
+	return autoConvert_v1beta1_MicroserviceSecutiry_To_seratos_MicroserviceSecutiry(in, out, s)
+}
+
+func autoConvert_seratos_MicroserviceSecutiry_To_v1beta1_MicroserviceSecutiry(in *seratos.MicroserviceSecutiry, out *MicroserviceSecutiry, s conversion.Scope) error {
+	out.Policy = in.Policy
+	out.Blocks = *(*[]string)(unsafe.Pointer(&in.Blocks))
+	out.Allow = *(*[]string)(unsafe.Pointer(&in.Allow))
+	return nil
+}
+
+// Convert_seratos_MicroserviceSecutiry_To_v1beta1_MicroserviceSecutiry is an autogenerated conversion function.
+func Convert_seratos_MicroserviceSecutiry_To_v1beta1_MicroserviceSecutiry(in *seratos.MicroserviceSecutiry, out *MicroserviceSecutiry, s conversion.Scope) error {
+	return autoConvert_seratos_MicroserviceSecutiry_To_v1beta1_MicroserviceSecutiry(in, out, s)
+}
+
+func autoConvert_v1beta1_MicroserviceSpec_To_seratos_MicroserviceSpec(in *MicroserviceSpec, out *seratos.MicroserviceSpec, s conversion.Scope) error {
+	out.Container = in.Container
+	out.Env = *(*[]seratos.Env)(unsafe.Pointer(&in.Env))
+	return nil
+}
+
+// Convert_v1beta1_MicroserviceSpec_To_seratos_MicroserviceSpec is an autogenerated conversion function.
+func Convert_v1beta1_MicroserviceSpec_To_seratos_MicroserviceSpec(in *MicroserviceSpec, out *seratos.MicroserviceSpec, s conversion.Scope) error {
+	return autoConvert_v1beta1_MicroserviceSpec_To_seratos_MicroserviceSpec(in, out, s)
+}
+
+func autoConvert_seratos_MicroserviceSpec_To_v1beta1_MicroserviceSpec(in *seratos.MicroserviceSpec, out *MicroserviceSpec, s conversion.Scope) error {
+	out.Container = in.Container
+	out.Env = *(*[]Env)(unsafe.Pointer(&in.Env))
+	return nil
+}
+
+// Convert_seratos_MicroserviceSpec_To_v1beta1_MicroserviceSpec is an autogenerated conversion function.
+func Convert_seratos_MicroserviceSpec_To_v1beta1_MicroserviceSpec(in *seratos.MicroserviceSpec, out *MicroserviceSpec, s conversion.Scope) error {
+	return autoConvert_seratos_MicroserviceSpec_To_v1beta1_MicroserviceSpec(in, out, s)
+}
+
+func autoConvert_v1beta1_MicroserviceTopology_To_seratos_MicroserviceTopology(in *MicroserviceTopology, out *seratos.MicroserviceTopology, s conversion.Scope) error {
+	out.Proxys = *(*[]seratos.Proxy)(unsafe.Pointer(&in.Proxys))
+	if err := Convert_v1beta1_MicroserviceSecutiry_To_seratos_MicroserviceSecutiry(&in.Secutiry, &out.Secutiry, s); err != nil {
+		return err
+	}
+	return nil
+}
+
+// Convert_v1beta1_MicroserviceTopology_To_seratos_MicroserviceTopology is an autogenerated conversion function.
+func Convert_v1beta1_MicroserviceTopology_To_seratos_MicroserviceTopology(in *MicroserviceTopology, out *seratos.MicroserviceTopology, s conversion.Scope) error {
+	return autoConvert_v1beta1_MicroserviceTopology_To_seratos_MicroserviceTopology(in, out, s)
+}
+
+func autoConvert_seratos_MicroserviceTopology_To_v1beta1_MicroserviceTopology(in *seratos.MicroserviceTopology, out *MicroserviceTopology, s conversion.Scope) error {
+	out.Proxys = *(*[]Proxy)(unsafe.Pointer(&in.Proxys))
+	if err := Convert_seratos_MicroserviceSecutiry_To_v1beta1_MicroserviceSecutiry(&in.Secutiry, &out.Secutiry, s); err != nil {
+		return err
+	}
+	return nil
+}
+
+// Convert_seratos_MicroserviceTopology_To_v1beta1_MicroserviceTopology is an autogenerated conversion function.
+func Convert_seratos_MicroserviceTopology_To_v1beta1_MicroserviceTopology(in *seratos.MicroserviceTopology, out *MicroserviceTopology, s conversion.Scope) error {
+	return autoConvert_seratos_MicroserviceTopology_To_v1beta1_MicroserviceTopology(in, out, s)
+}
+
+func autoConvert_v1beta1_Proxy_To_seratos_Proxy(in *Proxy, out *seratos.Proxy, s conversion.Scope) error {
+	out.Service = in.Service
+	out.Host = in.Host
+	if err := Convert_v1beta1_ProxyPorts_To_seratos_ProxyPorts(&in.Ports, &out.Ports, s); err != nil {
+		return err
+	}
+	return nil
+}
+
+// Convert_v1beta1_Proxy_To_seratos_Proxy is an autogenerated conversion function.
+func Convert_v1beta1_Proxy_To_seratos_Proxy(in *Proxy, out *seratos.Proxy, s conversion.Scope) error {
+	return autoConvert_v1beta1_Proxy_To_seratos_Proxy(in, out, s)
+}
+
+func autoConvert_seratos_Proxy_To_v1beta1_Proxy(in *seratos.Proxy, out *Proxy, s conversion.Scope) error {
+	out.Service = in.Service
+	out.Host = in.Host
+	if err := Convert_seratos_ProxyPorts_To_v1beta1_ProxyPorts(&in.Ports, &out.Ports, s); err != nil {
+		return err
+	}
+	return nil
+}
+
+// Convert_seratos_Proxy_To_v1beta1_Proxy is an autogenerated conversion function.
+func Convert_seratos_Proxy_To_v1beta1_Proxy(in *seratos.Proxy, out *Proxy, s conversion.Scope) error {
+	return autoConvert_seratos_Proxy_To_v1beta1_Proxy(in, out, s)
+}
+
+func autoConvert_v1beta1_ProxyPorts_To_seratos_ProxyPorts(in *ProxyPorts, out *seratos.ProxyPorts, s conversion.Scope) error {
+	out.TCP = in.TCP
+	out.HTTP2 = in.HTTP2
+	return nil
+}
+
+// Convert_v1beta1_ProxyPorts_To_seratos_ProxyPorts is an autogenerated conversion function.
+func Convert_v1beta1_ProxyPorts_To_seratos_ProxyPorts(in *ProxyPorts, out *seratos.ProxyPorts, s conversion.Scope) error {
+	return autoConvert_v1beta1_ProxyPorts_To_seratos_ProxyPorts(in, out, s)
+}
+
+func autoConvert_seratos_ProxyPorts_To_v1beta1_ProxyPorts(in *seratos.ProxyPorts, out *ProxyPorts, s conversion.Scope) error {
+	out.TCP = in.TCP
+	out.HTTP2 = in.HTTP2
+	return nil
+}
+
+// Convert_seratos_ProxyPorts_To_v1beta1_ProxyPorts is an autogenerated conversion function.
+func Convert_seratos_ProxyPorts_To_v1beta1_ProxyPorts(in *seratos.ProxyPorts, out *ProxyPorts, s conversion.Scope) error {
+	return autoConvert_seratos_ProxyPorts_To_v1beta1_ProxyPorts(in, out, s)
 }

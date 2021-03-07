@@ -26,6 +26,8 @@ import (
 type Interface interface {
 	// Foos returns a FooInformer.
 	Foos() FooInformer
+	// Microservices returns a MicroserviceInformer.
+	Microservices() MicroserviceInformer
 }
 
 type version struct {
@@ -42,4 +44,9 @@ func New(f internalinterfaces.SharedInformerFactory, namespace string, tweakList
 // Foos returns a FooInformer.
 func (v *version) Foos() FooInformer {
 	return &fooInformer{factory: v.factory, namespace: v.namespace, tweakListOptions: v.tweakListOptions}
+}
+
+// Microservices returns a MicroserviceInformer.
+func (v *version) Microservices() MicroserviceInformer {
+	return &microserviceInformer{factory: v.factory, namespace: v.namespace, tweakListOptions: v.tweakListOptions}
 }
