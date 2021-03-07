@@ -9,6 +9,10 @@ import (
 	"k8s.io/apimachinery/pkg/runtime/schema"
 	"k8s.io/apimachinery/pkg/runtime/serializer"
 	"k8s.io/apimachinery/pkg/version"
+	"k8s.io/apiserver/pkg/registry/rest"
+
+	customregistry "github.com/Marcos30004347/seratos-api/pkg/registry"
+	foostorage "github.com/Marcos30004347/seratos-api/pkg/registry/seratos/foo"
 	genericapiserver "k8s.io/apiserver/pkg/server"
 )
 
@@ -87,6 +91,11 @@ func (c CompletedConfig) New() (*CustomServer, error) {
 	}
 
 	apiGroupInfo := genericapiserver.NewDefaultAPIGroupInfo(seratos.GroupName, Scheme, metav1.ParameterCodec, Codecs)
+
+	// NewREST from the registry/etcd.go
+	v1beta1storage := map[string]rest.Storage{}
+	v1beta1storage["foos"] = customregistry.RESTInPeace(foostorage.NewREST(Scheme, c.GenericConfig.RESTOptionsGetter))
+	apiGroupInfo.VersionedResourcesStorageMap["v1beta1"] = v1beta1storage
 
 	if err := s.GenericAPIServer.InstallAPIGroup(&apiGroupInfo); err != nil {
 		return nil, err
