@@ -26,7 +26,7 @@ import (
 	serveroptions "k8s.io/apiserver/pkg/server/options"
 )
 
-const defaultEtcdPathPrefix = "/registry/baz.info"
+const defaultEtcdPathPrefix = "/registry/seratos.microservices"
 
 type CustomServerOptions struct {
 	RecommendedOptions    *serveroptions.RecommendedOptions
@@ -107,10 +107,6 @@ func (o *CustomServerOptions) Config() (*apiserver.Config, error) {
 	// Instantiate the default recommended configuration
 	serverConfig := genericapiserver.NewRecommendedConfig(apiserver.Codecs)
 
-	// serverConfig.OpenAPIConfig = genericapiserver.DefaultOpenAPIConfig(sampleopenapi.GetOpenAPIDefinitions, openapi.NewDefinitionNamer(apiserver.Scheme))
-	// serverConfig.OpenAPIConfig.Info.Title = "baz"
-	// serverConfig.OpenAPIConfig.Info.Version = "0.1"
-
 	// Change the default according to flags and other customized options
 	err := o.RecommendedOptions.ApplyTo(serverConfig)
 
@@ -138,7 +134,7 @@ func (o CustomServerOptions) Run(stopCh <-chan struct{}) error {
 		return err
 	}
 
-	server.GenericAPIServer.AddPostStartHook("start-baz-api-informers", func(context genericapiserver.PostStartHookContext) error {
+	server.GenericAPIServer.AddPostStartHook("start-seratos-api-informers", func(context genericapiserver.PostStartHookContext) error {
 		config.GenericConfig.SharedInformerFactory.Start(context.StopCh)
 		o.SharedInformerFactory.Start(context.StopCh)
 		return nil
@@ -154,8 +150,5 @@ func (o CustomServerOptions) Validate() error {
 }
 
 func (o *CustomServerOptions) Complete() error {
-	// add admisison plugins to the RecommendedPluginOrder
-	o.RecommendedOptions.Admission.RecommendedPluginOrder = append(o.RecommendedOptions.Admission.RecommendedPluginOrder, "FooBar")
-
 	return nil
 }

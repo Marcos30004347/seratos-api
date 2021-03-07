@@ -18,10 +18,6 @@ limitations under the License.
 
 package internalversion
 
-// BarListerExpansion allows custom methods to be added to
-// BarLister.
-type BarListerExpansion interface{}
-
 // FooListerExpansion allows custom methods to be added to
 // FooLister.
 type FooListerExpansion interface{}
