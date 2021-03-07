@@ -14,8 +14,8 @@ RUN go get github.com/emicklei/go-restful
 RUN go get github.com/go-openapi/spec
 RUN go get k8s.io/klog
 
-RUN mkdir -p /go/src/github.com/Marcos30004347/k8s-custom-API-Server
-VOLUME /go/src/github.com/Marcos30004347/k8s-custom-API-Server
+RUN mkdir -p /go/src/github.com/Marcos30004347/seratos-api
+VOLUME /go/src/github.com/Marcos30004347/seratos-api
 
 WORKDIR /go/src/k8s.io/code-generator
 

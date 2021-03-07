@@ -10,7 +10,7 @@ stop:
 	./hack/scripts/minikube-shutdown.sh
 
 build:
-	docker build -t marcos30004347/k8scustomapiserver .
+	docker build -t marcos30004347/seratos-api .
 
 codegen:
 	chmod 777 ./hack/scripts/codegen.sh
