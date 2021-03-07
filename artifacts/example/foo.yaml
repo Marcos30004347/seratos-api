@@ -1,0 +1,4 @@
+apiVersion: seratos.microservice/v1beta1
+kind: Foo
+metadata:
+  name: foo

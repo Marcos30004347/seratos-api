@@ -13,7 +13,7 @@ stop:
 	./hack/scripts/minikube-shutdown.sh
 
 build:
-	docker build -f "${CURRENT_DIR}/hack/docker/seratos-api.dockerfile -t marcos30004347/seratos-api .
+	docker build -f ./hack/docker/seratos-api.dockerfile -t marcos30004347/seratos-api .
 
 codegen:
 	chmod 777 ./hack/scripts/codegen.sh

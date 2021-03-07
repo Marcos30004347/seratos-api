@@ -29,7 +29,7 @@ type SeratosInterface interface {
 	MicroservicesGetter
 }
 
-// SeratosClient is used to interact with features provided by the seratos.microservices group.
+// SeratosClient is used to interact with features provided by the seratos.microservice group.
 type SeratosClient struct {
 	restClient rest.Interface
 }
@@ -75,8 +75,8 @@ func setConfigDefaults(config *rest.Config) error {
 	if config.UserAgent == "" {
 		config.UserAgent = rest.DefaultKubernetesUserAgent()
 	}
-	if config.GroupVersion == nil || config.GroupVersion.Group != scheme.Scheme.PrioritizedVersionsForGroup("seratos.microservices")[0].Group {
-		gv := scheme.Scheme.PrioritizedVersionsForGroup("seratos.microservices")[0]
+	if config.GroupVersion == nil || config.GroupVersion.Group != scheme.Scheme.PrioritizedVersionsForGroup("seratos.microservice")[0].Group {
+		gv := scheme.Scheme.PrioritizedVersionsForGroup("seratos.microservice")[0]
 		config.GroupVersion = &gv
 	}
 	config.NegotiatedSerializer = scheme.Codecs

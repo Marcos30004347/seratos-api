@@ -65,7 +65,7 @@ type ProxyPorts struct {
 	HTTP2 int32 `json:"http2" protobuf:"bytes,1,opt,name=http2"`
 }
 
-// MicroserviceSecutiry defines microservice secutiry parameters
+// MicroserviceSecutiry defines microservice secutiry
 type MicroserviceSecutiry struct {
 	Policy string   `json:"policity" protobuf:"bytes,1,opt,name=policity"`
 	Blocks []string `json:"blocks" protobuf:"bytes,1,opt,name=blocks"`

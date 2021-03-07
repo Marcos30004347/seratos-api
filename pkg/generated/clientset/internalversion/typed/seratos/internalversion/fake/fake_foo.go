@@ -36,9 +36,9 @@ type FakeFoos struct {
 	ns   string
 }
 
-var foosResource = schema.GroupVersionResource{Group: "seratos.microservices", Version: "", Resource: "foos"}
+var foosResource = schema.GroupVersionResource{Group: "seratos.microservice", Version: "", Resource: "foos"}
 
-var foosKind = schema.GroupVersionKind{Group: "seratos.microservices", Version: "", Kind: "Foo"}
+var foosKind = schema.GroupVersionKind{Group: "seratos.microservice", Version: "", Kind: "Foo"}
 
 // Get takes name of the foo, and returns the corresponding foo object, and an error if there is any.
 func (c *FakeFoos) Get(ctx context.Context, name string, options v1.GetOptions) (result *seratos.Foo, err error) {

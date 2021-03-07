@@ -2,7 +2,7 @@
 // +k8s:deepcopy-gen=package
 // +k8s:conversion-gen=github.com/Marcos30004347/seratos-api/pkg/apis/seratos
 // +k8s:defaulter-gen=TypeMeta
-// +groupName=seratos.microservices
+// +groupName=seratos.microservice
 
 // Package v1beta1 is the v1beta1 version of the API.
 package v1beta1

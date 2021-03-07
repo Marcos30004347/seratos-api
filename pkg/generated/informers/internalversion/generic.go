@@ -52,7 +52,7 @@ func (f *genericInformer) Lister() cache.GenericLister {
 // TODO extend this to unknown resources with a client pool
 func (f *sharedInformerFactory) ForResource(resource schema.GroupVersionResource) (GenericInformer, error) {
 	switch resource {
-	// Group=seratos.microservices, Version=internalVersion
+	// Group=seratos.microservice, Version=internalVersion
 	case seratos.SchemeGroupVersion.WithResource("foos"):
 		return &genericInformer{resource: resource.GroupResource(), informer: f.Seratos().InternalVersion().Foos().Informer()}, nil
 	case seratos.SchemeGroupVersion.WithResource("microservices"):

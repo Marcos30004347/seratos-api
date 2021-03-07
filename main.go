@@ -30,6 +30,16 @@ func runServerAPI(wg *sync.WaitGroup) {
 func main() {
 	// Read command line flags
 	// Init logs
+	flag.String("kubeconfig", "", "a string")
+	flag.String("master", "", "a string")
+	flag.String("cert-dir", "", "a string")
+	flag.String("etcd-servers", "", "a string")
+	flag.String("authentication-kubeconfig", "", "a string")
+	flag.String("authorization-kubeconfig", "", "a string")
+	flag.String("secure-port", "", "a string")
+
+	flag.Parse()
+
 	logs.InitLogs()
 	defer logs.FlushLogs()
 

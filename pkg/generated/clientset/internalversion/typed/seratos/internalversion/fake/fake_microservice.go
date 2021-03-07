@@ -36,9 +36,9 @@ type FakeMicroservices struct {
 	ns   string
 }
 
-var microservicesResource = schema.GroupVersionResource{Group: "seratos.microservices", Version: "", Resource: "microservices"}
+var microservicesResource = schema.GroupVersionResource{Group: "seratos.microservice", Version: "", Resource: "microservices"}
 
-var microservicesKind = schema.GroupVersionKind{Group: "seratos.microservices", Version: "", Kind: "Microservice"}
+var microservicesKind = schema.GroupVersionKind{Group: "seratos.microservice", Version: "", Kind: "Microservice"}
 
 // Get takes name of the microservice, and returns the corresponding microservice object, and an error if there is any.
 func (c *FakeMicroservices) Get(ctx context.Context, name string, options v1.GetOptions) (result *seratos.Microservice, err error) {

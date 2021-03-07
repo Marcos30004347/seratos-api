@@ -1,7 +1,6 @@
 package server
 
 import (
-	"flag"
 	"fmt"
 	"io"
 	"net"
@@ -29,7 +28,7 @@ import (
 	serveroptions "k8s.io/apiserver/pkg/server/options"
 )
 
-const defaultEtcdPathPrefix = "/registry/seratos.microservices"
+const defaultEtcdPathPrefix = "/registry/seratos.microservice"
 
 type CustomServerOptions struct {
 	RecommendedOptions    *serveroptions.RecommendedOptions
@@ -79,7 +78,6 @@ func NewCommandStartCustomServer(
 		},
 	}
 
-	flag.Parse()
 	flags := cmd.Flags()
 	o.RecommendedOptions.AddFlags(flags)
 	utilfeature.DefaultMutableFeatureGate.AddFlag(flags)

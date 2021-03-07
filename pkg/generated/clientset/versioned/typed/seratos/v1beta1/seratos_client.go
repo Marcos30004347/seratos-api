@@ -30,7 +30,7 @@ type SeratosV1beta1Interface interface {
 	MicroservicesGetter
 }
 
-// SeratosV1beta1Client is used to interact with features provided by the seratos.microservices group.
+// SeratosV1beta1Client is used to interact with features provided by the seratos.microservice group.
 type SeratosV1beta1Client struct {
 	restClient rest.Interface
 }

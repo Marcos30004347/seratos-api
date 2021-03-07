@@ -1,12 +1,14 @@
-apiVersion: seratos.microservice/v1
+apiVersion: seratos.microservice/v1beta1
 kind: Microservice
 metadata:
   name: serviceA
-  namespace: clusterA
 spec:
   container: marcos30004347/consul-sidecar:latest
   env:
-    - PORT: 8080
+    - name: PORT
+      value: 8080
+    - name: TESTE
+      value: "hahahah"
   topology:
     proxys:
       - service: serviceB
@@ -23,6 +25,6 @@ spec:
           - serviceD
           - serviceE
       allow:
-          - service: serviceF
+          - serviceF
           - serviceG
           - serviceH
