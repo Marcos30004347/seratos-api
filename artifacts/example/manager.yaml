@@ -1,0 +1,22 @@
+apiVersion: seratos.microservice/v1
+kind: MicroserviceManagerConfig
+metadata:
+  name: topology-manager
+  namespace: clusterA
+spec:
+  preventDefault: true
+  on:
+    create:
+      job: cron-job-created
+      env:
+        SERVICE: "{{ payload }}"
+    delete:
+      rest:
+        post:
+          url: 127.0.0.1:80/consul/intention
+          body: "{{ payload }}"
+    update:
+      job: cron-job-update
+
+
+

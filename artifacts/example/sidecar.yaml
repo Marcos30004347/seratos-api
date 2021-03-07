@@ -1,0 +1,8 @@
+apiVersion: seratos.microservice/v1
+kind: Sidecar
+metadata:
+  name: consul-sidecar
+spec:
+  container: marcos30004347/consul-sidecar:latest
+  env:
+    - TESTE: Teste
