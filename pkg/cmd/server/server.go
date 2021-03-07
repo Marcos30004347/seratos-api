@@ -14,7 +14,7 @@ import (
 	utilfeature "k8s.io/apiserver/pkg/util/feature"
 
 	"github.com/Marcos30004347/seratos-api/pkg/apis/seratos/v1beta1"
-	"github.com/Marcos30004347/seratos-api/pkg/apiserver"
+	// "github.com/Marcos30004347/seratos-api/pkg/apiserver"
 
 	clientset "github.com/Marcos30004347/seratos-api/pkg/generated/clientset/versioned"
 
