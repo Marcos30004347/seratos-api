@@ -3,7 +3,7 @@ package initializer
 import (
 	"k8s.io/apiserver/pkg/admission"
 
-	informers "github.com/Marcos30004347/k8s-custom-API-Server/pkg/generated/informers/externalversions"
+	informers "github.com/Marcos30004347/seratos-api/pkg/generated/informers/externalversions"
 )
 
 type seratosInformerPluginInitializer struct {

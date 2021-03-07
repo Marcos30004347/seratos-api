@@ -1,16 +1,19 @@
 deps:
-	go get -t .
+	GO111MODULE=on go mod tidy  
 
 start:
 	chmod 777 ./hack/scripts/minikube-startup.sh
 	./hack/scripts/minikube-startup.sh
+
+compile: deps
+	CGO_ENABLED=0 GOOS=linux go build .
 
 stop:
 	chmod 777 ./hack/scripts/minikube-shutdown.sh
 	./hack/scripts/minikube-shutdown.sh
 
 build:
-	docker build -t marcos30004347/seratos-api .
+	docker build -f "${CURRENT_DIR}/hack/docker/seratos-api.dockerfile -t marcos30004347/seratos-api .
 
 codegen:
 	chmod 777 ./hack/scripts/codegen.sh
