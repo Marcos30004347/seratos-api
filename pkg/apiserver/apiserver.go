@@ -13,6 +13,7 @@ import (
 
 	customregistry "github.com/Marcos30004347/seratos-api/pkg/registry"
 	foostorage "github.com/Marcos30004347/seratos-api/pkg/registry/seratos/foo"
+	microservicesstorage "github.com/Marcos30004347/seratos-api/pkg/registry/seratos/microservices"
 	genericapiserver "k8s.io/apiserver/pkg/server"
 )
 
@@ -95,6 +96,8 @@ func (c CompletedConfig) New() (*CustomServer, error) {
 	// NewREST from the registry/etcd.go
 	v1beta1storage := map[string]rest.Storage{}
 	v1beta1storage["foos"] = customregistry.RESTInPeace(foostorage.NewREST(Scheme, c.GenericConfig.RESTOptionsGetter))
+	v1beta1storage["microservices"] = customregistry.RESTInPeace(microservicesstorage.NewREST(Scheme, c.GenericConfig.RESTOptionsGetter))
+
 	apiGroupInfo.VersionedResourcesStorageMap["v1beta1"] = v1beta1storage
 
 	if err := s.GenericAPIServer.InstallAPIGroup(&apiGroupInfo); err != nil {

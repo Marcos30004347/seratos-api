@@ -16,7 +16,7 @@ import (
 
 // Register registers a plugin
 func Register(plugins *admission.Plugins) {
-	plugins.Register("FooBar", func(config io.Reader) (admission.Interface, error) {
+	plugins.Register("Microservices", func(config io.Reader) (admission.Interface, error) {
 		return New()
 	})
 }
@@ -24,30 +24,49 @@ func Register(plugins *admission.Plugins) {
 // The Plugin structure
 type Plugin struct {
 	*admission.Handler
-	fooLister listers.FooLister
+	fooLister           listers.FooLister
+	microservicesLister listers.MicroserviceLister
 }
 
 var _ = initializer.WantsSeratosInformerFactory(&Plugin{})
 
-// Admit ensures that the object in-flight is of kind Foo.
-// In addition checks that the bar are known.
-func (d *Plugin) Admit(ctx context.Context, a admission.Attributes, _ admission.ObjectInterfaces) error {
-	if a.GetKind().GroupKind() != seratos.Kind("Foo") {
-		return nil
-	}
-
+func AdmitFoo(ctx context.Context, d *Plugin, a admission.Attributes, oi admission.ObjectInterfaces) error {
 	if !d.WaitForReady() {
 		return admission.NewForbidden(a, fmt.Errorf("not yet ready to handle request"))
 	}
-
 	return nil
+}
+
+func AdmitMicroservices(ctx context.Context, d *Plugin, a admission.Attributes, oi admission.ObjectInterfaces) error {
+	if !d.WaitForReady() {
+		return admission.NewForbidden(a, fmt.Errorf("not yet ready to handle request"))
+	}
+	return nil
+}
+
+// Admit ensures that the object in-flight is of kind Foo.
+// In addition checks that the bar are known.
+func (d *Plugin) Admit(ctx context.Context, a admission.Attributes, oi admission.ObjectInterfaces) error {
+	switch a.GetKind().GroupKind() {
+	case seratos.Kind("Foo"):
+		return AdmitFoo(ctx, d, a, oi)
+	case seratos.Kind("Microservices"):
+		return AdmitMicroservices(ctx, d, a, oi)
+	default:
+		if !d.WaitForReady() {
+			return admission.NewForbidden(a, fmt.Errorf("not yet ready to handle request"))
+		}
+		return nil
+	}
 }
 
 // SetSeratosInformerFactory gets Lister from SharedInformerFactory.
 // The lister knows how to lists Bar.
 func (d *Plugin) SetSeratosInformerFactory(f informers.SharedInformerFactory) {
 	d.fooLister = f.Seratos().V1beta1().Foos().Lister()
-	d.SetReadyFunc(f.Seratos().V1beta1().Foos().Informer().HasSynced)
+	d.microservicesLister = f.Seratos().V1beta1().Microservices().Lister()
+
+	d.SetReadyFunc(f.Seratos().V1beta1().Microservices().Informer().HasSynced)
 }
 
 // ValidateInitialization checks whether the plugin was correctly initialized.
