@@ -14,11 +14,14 @@ import (
 	utilfeature "k8s.io/apiserver/pkg/util/feature"
 
 	"github.com/Marcos30004347/seratos-api/pkg/apis/seratos/v1beta1"
-	// "github.com/Marcos30004347/seratos-api/pkg/apiserver"
+	"github.com/Marcos30004347/seratos-api/pkg/apiserver"
 
 	clientset "github.com/Marcos30004347/seratos-api/pkg/generated/clientset/versioned"
 
 	informers "github.com/Marcos30004347/seratos-api/pkg/generated/informers/externalversions"
+
+	"github.com/Marcos30004347/seratos-api/pkg/admission/initializer"
+	"github.com/Marcos30004347/seratos-api/pkg/admission/plugin/microservices"
 
 	"k8s.io/apiserver/pkg/admission"
 	"k8s.io/apiserver/pkg/features"
@@ -101,7 +104,7 @@ func (o *CustomServerOptions) Config() (*apiserver.Config, error) {
 		}
 		informerFactory := informers.NewSharedInformerFactory(client, c.LoopbackClientConfig.Timeout)
 		o.SharedInformerFactory = informerFactory
-		return []admission.PluginInitializer{}, nil
+		return []admission.PluginInitializer{initializer.New(informerFactory)}, nil
 	}
 
 	// Instantiate the default recommended configuration
@@ -150,5 +153,11 @@ func (o CustomServerOptions) Validate() error {
 }
 
 func (o *CustomServerOptions) Complete() error {
+	// register admission plugins
+	microservices.Register(o.RecommendedOptions.Admission.Plugins)
+
+	// add admisison plugins to the RecommendedPluginOrder
+	o.RecommendedOptions.Admission.RecommendedPluginOrder = append(o.RecommendedOptions.Admission.RecommendedPluginOrder, "Microservices")
+
 	return nil
 }
