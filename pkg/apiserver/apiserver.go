@@ -17,7 +17,6 @@ import (
 	eventbindingsstorage "github.com/Marcos30004347/seratos-api/pkg/registry/seratos/eventbindings"
 	eventhandlersstorage "github.com/Marcos30004347/seratos-api/pkg/registry/seratos/eventhandlers"
 	eventsstorage "github.com/Marcos30004347/seratos-api/pkg/registry/seratos/events"
-	foostorage "github.com/Marcos30004347/seratos-api/pkg/registry/seratos/foo"
 	microservicesstorage "github.com/Marcos30004347/seratos-api/pkg/registry/seratos/microservices"
 	genericapiserver "k8s.io/apiserver/pkg/server"
 )
@@ -100,7 +99,6 @@ func (c CompletedConfig) New() (*CustomServer, error) {
 
 	// NewREST from the registry/etcd.go
 	v1beta1storage := map[string]rest.Storage{}
-	v1beta1storage["foos"] = customregistry.RESTInPeace(foostorage.NewREST(Scheme, c.GenericConfig.RESTOptionsGetter))
 	v1beta1storage["events"] = customregistry.RESTInPeace(eventsstorage.NewREST(Scheme, c.GenericConfig.RESTOptionsGetter))
 	v1beta1storage["eventbindings"] = customregistry.RESTInPeace(eventbindingsstorage.NewREST(Scheme, c.GenericConfig.RESTOptionsGetter))
 	v1beta1storage["eventhandlers"] = customregistry.RESTInPeace(eventhandlersstorage.NewREST(Scheme, c.GenericConfig.RESTOptionsGetter))

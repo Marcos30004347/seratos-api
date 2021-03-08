@@ -28,7 +28,6 @@ type SeratosInterface interface {
 	EventsGetter
 	EventBindingsGetter
 	EventHandlersGetter
-	FoosGetter
 	MicroservicesGetter
 }
 
@@ -47,10 +46,6 @@ func (c *SeratosClient) EventBindings(namespace string) EventBindingInterface {
 
 func (c *SeratosClient) EventHandlers(namespace string) EventHandlerInterface {
 	return newEventHandlers(c, namespace)
-}
-
-func (c *SeratosClient) Foos(namespace string) FooInterface {
-	return newFoos(c, namespace)
 }
 
 func (c *SeratosClient) Microservices(namespace string) MicroserviceInterface {

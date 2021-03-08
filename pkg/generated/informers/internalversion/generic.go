@@ -59,8 +59,6 @@ func (f *sharedInformerFactory) ForResource(resource schema.GroupVersionResource
 		return &genericInformer{resource: resource.GroupResource(), informer: f.Seratos().InternalVersion().EventBindings().Informer()}, nil
 	case seratos.SchemeGroupVersion.WithResource("eventhandlers"):
 		return &genericInformer{resource: resource.GroupResource(), informer: f.Seratos().InternalVersion().EventHandlers().Informer()}, nil
-	case seratos.SchemeGroupVersion.WithResource("foos"):
-		return &genericInformer{resource: resource.GroupResource(), informer: f.Seratos().InternalVersion().Foos().Informer()}, nil
 	case seratos.SchemeGroupVersion.WithResource("microservices"):
 		return &genericInformer{resource: resource.GroupResource(), informer: f.Seratos().InternalVersion().Microservices().Informer()}, nil
 

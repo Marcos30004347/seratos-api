@@ -42,14 +42,6 @@ type EventHandlerListerExpansion interface{}
 // EventHandlerNamespaceLister.
 type EventHandlerNamespaceListerExpansion interface{}
 
-// FooListerExpansion allows custom methods to be added to
-// FooLister.
-type FooListerExpansion interface{}
-
-// FooNamespaceListerExpansion allows custom methods to be added to
-// FooNamespaceLister.
-type FooNamespaceListerExpansion interface{}
-
 // MicroserviceListerExpansion allows custom methods to be added to
 // MicroserviceLister.
 type MicroserviceListerExpansion interface{}

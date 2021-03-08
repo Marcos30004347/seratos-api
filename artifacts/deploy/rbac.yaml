@@ -26,15 +26,19 @@ rules:
   - seratos.microservice
   resources:
   - ats
-  - foos
   - microservices
+  - events
+  - eventhandlers
+  - eventbindings
   verbs: ["get", "list", "watch", "create", "update", "patch", "delete"]
 - apiGroups:
   - seratos.microservice
   resources:
   - ats/status
-  - foos/status
   - microservices/status
+  - events/status
+  - eventhandlers/status
+  - eventbindings/status
   verbs: ["get", "list", "update", "patch"]
 
 - apiGroups:

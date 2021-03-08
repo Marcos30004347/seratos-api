@@ -24,6 +24,4 @@ type EventBindingExpansion interface{}
 
 type EventHandlerExpansion interface{}
 
-type FooExpansion interface{}
-
 type MicroserviceExpansion interface{}

@@ -30,8 +30,6 @@ type Interface interface {
 	EventBindings() EventBindingInformer
 	// EventHandlers returns a EventHandlerInformer.
 	EventHandlers() EventHandlerInformer
-	// Foos returns a FooInformer.
-	Foos() FooInformer
 	// Microservices returns a MicroserviceInformer.
 	Microservices() MicroserviceInformer
 }
@@ -60,11 +58,6 @@ func (v *version) EventBindings() EventBindingInformer {
 // EventHandlers returns a EventHandlerInformer.
 func (v *version) EventHandlers() EventHandlerInformer {
 	return &eventHandlerInformer{factory: v.factory, namespace: v.namespace, tweakListOptions: v.tweakListOptions}
-}
-
-// Foos returns a FooInformer.
-func (v *version) Foos() FooInformer {
-	return &fooInformer{factory: v.factory, namespace: v.namespace, tweakListOptions: v.tweakListOptions}
 }
 
 // Microservices returns a MicroserviceInformer.

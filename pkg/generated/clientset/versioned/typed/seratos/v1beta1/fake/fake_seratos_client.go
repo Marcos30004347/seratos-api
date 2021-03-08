@@ -40,10 +40,6 @@ func (c *FakeSeratosV1beta1) EventHandlers(namespace string) v1beta1.EventHandle
 	return &FakeEventHandlers{c, namespace}
 }
 
-func (c *FakeSeratosV1beta1) Foos(namespace string) v1beta1.FooInterface {
-	return &FakeFoos{c, namespace}
-}
-
 func (c *FakeSeratosV1beta1) Microservices(namespace string) v1beta1.MicroserviceInterface {
 	return &FakeMicroservices{c, namespace}
 }

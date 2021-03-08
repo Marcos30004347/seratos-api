@@ -16,7 +16,7 @@ import (
 
 // Register registers a plugin
 func Register(plugins *admission.Plugins) {
-	plugins.Register("Microservices", func(config io.Reader) (admission.Interface, error) {
+	plugins.Register("EventHandlers", func(config io.Reader) (admission.Interface, error) {
 		return New()
 	})
 }
