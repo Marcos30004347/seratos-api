@@ -1,4 +1,4 @@
-package microservices
+package events
 
 import (
 	"context"
@@ -16,7 +16,7 @@ import (
 
 // Register registers a plugin
 func Register(plugins *admission.Plugins) {
-	plugins.Register("Microservices", func(config io.Reader) (admission.Interface, error) {
+	plugins.Register("Events", func(config io.Reader) (admission.Interface, error) {
 		return New()
 	})
 }
@@ -24,7 +24,7 @@ func Register(plugins *admission.Plugins) {
 // The Plugin structure
 type Plugin struct {
 	*admission.Handler
-	microservicesLister listers.MicroserviceLister
+	lister listers.EventLister
 }
 
 var _ = initializer.WantsSeratosInformerFactory(&Plugin{})
@@ -32,7 +32,7 @@ var _ = initializer.WantsSeratosInformerFactory(&Plugin{})
 // Admit ensures that the object in-flight is of kind Foo.
 // In addition checks that the bar are known.
 func (d *Plugin) Admit(ctx context.Context, a admission.Attributes, oi admission.ObjectInterfaces) error {
-	if a.GetKind().GroupKind() != seratos.Kind("Microservices") {
+	if a.GetKind().GroupKind() != seratos.Kind("Events") {
 		return nil
 	}
 	if !d.WaitForReady() {
@@ -45,20 +45,20 @@ func (d *Plugin) Admit(ctx context.Context, a admission.Attributes, oi admission
 // SetSeratosInformerFactory gets Lister from SharedInformerFactory.
 // The lister knows how to lists Bar.
 func (d *Plugin) SetSeratosInformerFactory(f informers.SharedInformerFactory) {
-	d.microservicesLister = f.Seratos().V1beta1().Microservices().Lister()
+	d.lister = f.Seratos().V1beta1().Events().Lister()
 
-	d.SetReadyFunc(f.Seratos().V1beta1().Microservices().Informer().HasSynced)
+	d.SetReadyFunc(f.Seratos().V1beta1().Events().Informer().HasSynced)
 }
 
 // ValidateInitialization checks whether the plugin was correctly initialized.
 func (d *Plugin) ValidateInitialization() error {
-	if d.microservicesLister == nil {
-		return fmt.Errorf("Microservices Plugin missing policy lister")
+	if d.lister == nil {
+		return fmt.Errorf("Events Plugin missing policy lister")
 	}
 	return nil
 }
 
-// New creates a new  admission plugin
+// New creates a new admission plugin
 func New() (*Plugin, error) {
 	return &Plugin{
 		Handler: admission.NewHandler(admission.Create, admission.Update),

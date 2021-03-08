@@ -1,4 +1,4 @@
-package microservices
+package eventhandlers
 
 import (
 	"context"
@@ -24,7 +24,7 @@ func Register(plugins *admission.Plugins) {
 // The Plugin structure
 type Plugin struct {
 	*admission.Handler
-	microservicesLister listers.MicroserviceLister
+	lister listers.EventHandlerLister
 }
 
 var _ = initializer.WantsSeratosInformerFactory(&Plugin{})
@@ -32,7 +32,7 @@ var _ = initializer.WantsSeratosInformerFactory(&Plugin{})
 // Admit ensures that the object in-flight is of kind Foo.
 // In addition checks that the bar are known.
 func (d *Plugin) Admit(ctx context.Context, a admission.Attributes, oi admission.ObjectInterfaces) error {
-	if a.GetKind().GroupKind() != seratos.Kind("Microservices") {
+	if a.GetKind().GroupKind() != seratos.Kind("EventHandlers") {
 		return nil
 	}
 	if !d.WaitForReady() {
@@ -45,15 +45,15 @@ func (d *Plugin) Admit(ctx context.Context, a admission.Attributes, oi admission
 // SetSeratosInformerFactory gets Lister from SharedInformerFactory.
 // The lister knows how to lists Bar.
 func (d *Plugin) SetSeratosInformerFactory(f informers.SharedInformerFactory) {
-	d.microservicesLister = f.Seratos().V1beta1().Microservices().Lister()
+	d.lister = f.Seratos().V1beta1().EventHandlers().Lister()
 
-	d.SetReadyFunc(f.Seratos().V1beta1().Microservices().Informer().HasSynced)
+	d.SetReadyFunc(f.Seratos().V1beta1().EventHandlers().Informer().HasSynced)
 }
 
 // ValidateInitialization checks whether the plugin was correctly initialized.
 func (d *Plugin) ValidateInitialization() error {
-	if d.microservicesLister == nil {
-		return fmt.Errorf("Microservices Plugin missing policy lister")
+	if d.lister == nil {
+		return fmt.Errorf("EventHandlers Plugin missing policy lister")
 	}
 	return nil
 }
