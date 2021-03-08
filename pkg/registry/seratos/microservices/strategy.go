@@ -24,7 +24,7 @@ func NewStrategy(typer runtime.ObjectTyper) MicroservicesStrategy {
 func GetAttrs(obj runtime.Object) (labels.Set, fields.Set, error) {
 	apiserver, ok := obj.(*seratos.Microservice)
 	if !ok {
-		return nil, nil, fmt.Errorf("given object is not a Bar")
+		return nil, nil, fmt.Errorf("given object is not a Microservice")
 	}
 	return labels.Set(apiserver.ObjectMeta.Labels), SelectableFields(apiserver), nil
 }
@@ -62,7 +62,6 @@ func (MicroservicesStrategy) PrepareForUpdate(ctx context.Context, obj, old runt
 // Here is where we actually use the Validate Function defined in the api
 func (MicroservicesStrategy) Validate(ctx context.Context, obj runtime.Object) field.ErrorList {
 	return field.ErrorList{}
-
 }
 
 func (MicroservicesStrategy) AllowCreateOnUpdate() bool {

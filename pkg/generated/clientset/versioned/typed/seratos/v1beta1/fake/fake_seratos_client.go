@@ -28,6 +28,18 @@ type FakeSeratosV1beta1 struct {
 	*testing.Fake
 }
 
+func (c *FakeSeratosV1beta1) Events(namespace string) v1beta1.EventInterface {
+	return &FakeEvents{c, namespace}
+}
+
+func (c *FakeSeratosV1beta1) EventBindings(namespace string) v1beta1.EventBindingInterface {
+	return &FakeEventBindings{c, namespace}
+}
+
+func (c *FakeSeratosV1beta1) EventHandlers(namespace string) v1beta1.EventHandlerInterface {
+	return &FakeEventHandlers{c, namespace}
+}
+
 func (c *FakeSeratosV1beta1) Foos(namespace string) v1beta1.FooInterface {
 	return &FakeFoos{c, namespace}
 }

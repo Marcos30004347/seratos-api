@@ -53,6 +53,12 @@ func (f *genericInformer) Lister() cache.GenericLister {
 func (f *sharedInformerFactory) ForResource(resource schema.GroupVersionResource) (GenericInformer, error) {
 	switch resource {
 	// Group=seratos.microservice, Version=v1beta1
+	case v1beta1.SchemeGroupVersion.WithResource("events"):
+		return &genericInformer{resource: resource.GroupResource(), informer: f.Seratos().V1beta1().Events().Informer()}, nil
+	case v1beta1.SchemeGroupVersion.WithResource("eventbindings"):
+		return &genericInformer{resource: resource.GroupResource(), informer: f.Seratos().V1beta1().EventBindings().Informer()}, nil
+	case v1beta1.SchemeGroupVersion.WithResource("eventhandlers"):
+		return &genericInformer{resource: resource.GroupResource(), informer: f.Seratos().V1beta1().EventHandlers().Informer()}, nil
 	case v1beta1.SchemeGroupVersion.WithResource("foos"):
 		return &genericInformer{resource: resource.GroupResource(), informer: f.Seratos().V1beta1().Foos().Informer()}, nil
 	case v1beta1.SchemeGroupVersion.WithResource("microservices"):

@@ -18,6 +18,30 @@ limitations under the License.
 
 package internalversion
 
+// EventListerExpansion allows custom methods to be added to
+// EventLister.
+type EventListerExpansion interface{}
+
+// EventNamespaceListerExpansion allows custom methods to be added to
+// EventNamespaceLister.
+type EventNamespaceListerExpansion interface{}
+
+// EventBindingListerExpansion allows custom methods to be added to
+// EventBindingLister.
+type EventBindingListerExpansion interface{}
+
+// EventBindingNamespaceListerExpansion allows custom methods to be added to
+// EventBindingNamespaceLister.
+type EventBindingNamespaceListerExpansion interface{}
+
+// EventHandlerListerExpansion allows custom methods to be added to
+// EventHandlerLister.
+type EventHandlerListerExpansion interface{}
+
+// EventHandlerNamespaceListerExpansion allows custom methods to be added to
+// EventHandlerNamespaceLister.
+type EventHandlerNamespaceListerExpansion interface{}
+
 // FooListerExpansion allows custom methods to be added to
 // FooLister.
 type FooListerExpansion interface{}

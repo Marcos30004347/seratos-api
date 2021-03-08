@@ -81,3 +81,85 @@ type MicroserviceList struct {
 
 	Items []Microservice `json:"items" protobuf:"bytes,2,rep,name=items"`
 }
+
+// +genclient
+// +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
+
+type Event struct {
+	metav1.TypeMeta   `json:",inline"`
+	metav1.ObjectMeta `json:"metadata,omitempty" protobuf:"bytes,1,opt,name=metadata"`
+	Spec              EventSpec `json:"spec,omitempty" protobuf:"bytes,2,opt,name=spec"`
+}
+
+type EventSpec struct {
+	Kind        string `json:"kind" protobuf:"bytes,1,rep,name=kind"`
+	SubjectName string `json:"subjectName" protobuf:"bytes,2,rep,name=subjectName"`
+	Event       string `json:"event" protobuf:"bytes,3,rep,name=event"`
+}
+
+// +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
+
+type EventList struct {
+	metav1.TypeMeta `json:",inline"`
+	metav1.ListMeta `json:"metadata,omitempty" protobuf:"bytes,1,opt,name=metadata"`
+
+	Items []Event `json:"items" protobuf:"bytes,2,rep,name=items"`
+}
+
+// +genclient
+// +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
+
+type EventHandler struct {
+	metav1.TypeMeta   `json:",inline"`
+	metav1.ObjectMeta `json:"metadata,omitempty" protobuf:"bytes,1,opt,name=metadata"`
+	Spec              EventHandlerSpec `json:"spec,omitempty" protobuf:"bytes,2,opt,name=spec"`
+}
+
+type EventHandlerSpec struct {
+	SubjectKind string               `json:"subjectKind" protobuf:"bytes,1,opt,name=subjectKind"`
+	Command     EventHandlerCommand  `json:"command" protobuf:"bytes,2,opt,name=command"`
+	Selector    metav1.LabelSelector `json:"selector" protobuf:"bytes,2,opt,name=selector"`
+}
+
+type EventHandlerCommand struct {
+	Exec string `json:"exec" protobuf:"bytes,1,opt,name=exec"`
+}
+
+// +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
+
+type EventHandlerList struct {
+	metav1.TypeMeta `json:",inline"`
+	metav1.ListMeta `json:"metadata,omitempty" protobuf:"bytes,1,opt,name=metadata"`
+
+	Items []EventHandler `json:"items" protobuf:"bytes,2,rep,name=items"`
+}
+
+// +genclient
+// +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
+
+type EventBinding struct {
+	metav1.TypeMeta   `json:",inline"`
+	metav1.ObjectMeta `json:"metadata,omitempty" protobuf:"bytes,1,opt,name=metadata"`
+
+	Spec EventBindingSpec `json:"spec,omitempty" protobuf:"bytes,2,opt,name=spec"`
+}
+
+type EventBindingSpec struct {
+	On       []string               `json:"on" protobuf:"bytes,1,opt,name=on"`
+	Handler  string                 `json:"handler" protobuf:"bytes,2,opt,name=handler"`
+	Subjects []EventBindingSubjects `json:"subjects" protobuf:"bytes,3,opt,name=subjects"`
+}
+
+type EventBindingSubjects struct {
+	Kind     string               `json:"kind" protobuf:"bytes,1,opt,name=kind"`
+	Selector metav1.LabelSelector `json:"selector" protobuf:"bytes,2,opt,name=selector"`
+}
+
+// +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
+
+type EventBindingList struct {
+	metav1.TypeMeta `json:",inline"`
+	metav1.ListMeta `json:"metadata,omitempty" protobuf:"bytes,1,opt,name=metadata"`
+
+	Items []EventBinding `json:"items" protobuf:"bytes,2,rep,name=items"`
+}
