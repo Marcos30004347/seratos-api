@@ -6,7 +6,7 @@ spec:
   container: marcos30004347/consul-sidecar:latest
   env:
     - name: PORT
-      value: 8080
+      value: "8080"
     - name: TESTE
       value: "hahahah"
   topology:

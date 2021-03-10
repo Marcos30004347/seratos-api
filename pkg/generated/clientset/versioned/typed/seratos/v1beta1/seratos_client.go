@@ -26,27 +26,12 @@ import (
 
 type SeratosV1beta1Interface interface {
 	RESTClient() rest.Interface
-	EventsGetter
-	EventBindingsGetter
-	EventHandlersGetter
 	MicroservicesGetter
 }
 
 // SeratosV1beta1Client is used to interact with features provided by the seratos.microservice group.
 type SeratosV1beta1Client struct {
 	restClient rest.Interface
-}
-
-func (c *SeratosV1beta1Client) Events(namespace string) EventInterface {
-	return newEvents(c, namespace)
-}
-
-func (c *SeratosV1beta1Client) EventBindings(namespace string) EventBindingInterface {
-	return newEventBindings(c, namespace)
-}
-
-func (c *SeratosV1beta1Client) EventHandlers(namespace string) EventHandlerInterface {
-	return newEventHandlers(c, namespace)
 }
 
 func (c *SeratosV1beta1Client) Microservices(namespace string) MicroserviceInterface {

@@ -1,57 +1,74 @@
 package main
 
 import (
-	"flag"
 	"os"
 	"sync"
 
-	"github.com/spf13/cobra"
-
-	genericapiserver "k8s.io/apiserver/pkg/server"
+	kubeapiserver "k8s.io/apiserver/pkg/server"
 
 	"github.com/Marcos30004347/seratos-api/pkg/cmd/server"
+	"github.com/Marcos30004347/seratos-api/pkg/runtime"
 
-	"k8s.io/component-base/logs"
 	"k8s.io/klog"
-)
 
-var (
-	stopCh  <-chan struct{}
-	command *cobra.Command
-	wg      sync.WaitGroup
-)
+	"github.com/Marcos30004347/seratos-api/pkg/controllers/controller"
 
-func runServerAPI(wg *sync.WaitGroup) {
-	if err := command.Execute(); err != nil {
-		klog.Fatal(err)
-	}
-}
+	"github.com/Marcos30004347/seratos-api/pkg/utils"
+)
 
 func main() {
-	// Read command line flags
-	// Init logs
-	flag.String("kubeconfig", "", "a string")
-	flag.String("master", "", "a string")
-	flag.String("cert-dir", "", "a string")
-	flag.String("etcd-servers", "", "a string")
-	flag.String("authentication-kubeconfig", "", "a string")
-	flag.String("authorization-kubeconfig", "", "a string")
-	flag.String("secure-port", "", "a string")
+	flags := utils.ParseFlags()
 
-	flag.Parse()
+	stopCh := kubeapiserver.SetupSignalHandler()
 
-	logs.InitLogs()
-	defer logs.FlushLogs()
+	kube, err := runtime.NewKubernetesRuntime(*flags.KubeConfig, *flags.Master, stopCh)
+	if err != nil {
+		klog.Fatalf("Error building Kube client: %s", err.Error())
+	}
 
-	stopCh = genericapiserver.SetupSignalHandler()
-	options := server.NewCustomServerOptions(os.Stdout, os.Stderr)
+	seratosRuntime, err := runtime.NewSeratosRuntime(kube.RESTConfig)
 
-	command = server.NewCommandStartCustomServer(options, stopCh)
-	command.Flags().AddGoFlagSet(flag.CommandLine)
+	if err != nil {
+		klog.Fatalf("Error building Seratos Runtime: %s", err.Error())
+	}
 
-	wg.Add(1)
+	command := server.NewCommandStartCustomServer(
+		server.NewCustomServerOptions(os.Stdout, os.Stderr),
+		stopCh,
+	)
 
-	go runServerAPI(&wg)
+	command.Flags().AddGoFlagSet(flags.CommandLine)
+
+	msController := controller.NewController(
+		kube,
+		seratosRuntime,
+	)
+
+	kube.Run(stopCh)
+	seratosRuntime.Run(stopCh)
+
+	// controller.ReadEvents(kube)
+
+	var wg sync.WaitGroup
+
+	wg.Add(2)
+
+	go func(wg *sync.WaitGroup) {
+		if err := command.Execute(); err != nil {
+			klog.Fatal(err)
+		}
+	}(&wg)
+
+	go func(wg *sync.WaitGroup) {
+		defer wg.Done()
+
+		if err := msController.Run(2, stopCh); err != nil {
+			klog.Fatalf("Error running controller: %s", err.Error())
+		}
+	}(&wg)
 
 	wg.Wait()
+
+	kube.Cleanup()
+	seratosRuntime.Cleanup()
 }

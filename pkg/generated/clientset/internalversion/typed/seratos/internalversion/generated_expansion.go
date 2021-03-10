@@ -18,10 +18,4 @@ limitations under the License.
 
 package internalversion
 
-type EventExpansion interface{}
-
-type EventBindingExpansion interface{}
-
-type EventHandlerExpansion interface{}
-
 type MicroserviceExpansion interface{}

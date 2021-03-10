@@ -14,9 +14,6 @@ import (
 	customregistry "github.com/Marcos30004347/seratos-api/pkg/registry"
 
 	// storages
-	eventbindingsstorage "github.com/Marcos30004347/seratos-api/pkg/registry/seratos/eventbindings"
-	eventhandlersstorage "github.com/Marcos30004347/seratos-api/pkg/registry/seratos/eventhandlers"
-	eventsstorage "github.com/Marcos30004347/seratos-api/pkg/registry/seratos/events"
 	microservicesstorage "github.com/Marcos30004347/seratos-api/pkg/registry/seratos/microservices"
 	genericapiserver "k8s.io/apiserver/pkg/server"
 )
@@ -99,9 +96,6 @@ func (c CompletedConfig) New() (*CustomServer, error) {
 
 	// NewREST from the registry/etcd.go
 	v1beta1storage := map[string]rest.Storage{}
-	v1beta1storage["events"] = customregistry.RESTInPeace(eventsstorage.NewREST(Scheme, c.GenericConfig.RESTOptionsGetter))
-	v1beta1storage["eventbindings"] = customregistry.RESTInPeace(eventbindingsstorage.NewREST(Scheme, c.GenericConfig.RESTOptionsGetter))
-	v1beta1storage["eventhandlers"] = customregistry.RESTInPeace(eventhandlersstorage.NewREST(Scheme, c.GenericConfig.RESTOptionsGetter))
 	v1beta1storage["microservices"] = customregistry.RESTInPeace(microservicesstorage.NewREST(Scheme, c.GenericConfig.RESTOptionsGetter))
 
 	apiGroupInfo.VersionedResourcesStorageMap["v1beta1"] = v1beta1storage

@@ -24,12 +24,6 @@ import (
 
 // Interface provides access to all the informers in this group version.
 type Interface interface {
-	// Events returns a EventInformer.
-	Events() EventInformer
-	// EventBindings returns a EventBindingInformer.
-	EventBindings() EventBindingInformer
-	// EventHandlers returns a EventHandlerInformer.
-	EventHandlers() EventHandlerInformer
 	// Microservices returns a MicroserviceInformer.
 	Microservices() MicroserviceInformer
 }
@@ -43,21 +37,6 @@ type version struct {
 // New returns a new Interface.
 func New(f internalinterfaces.SharedInformerFactory, namespace string, tweakListOptions internalinterfaces.TweakListOptionsFunc) Interface {
 	return &version{factory: f, namespace: namespace, tweakListOptions: tweakListOptions}
-}
-
-// Events returns a EventInformer.
-func (v *version) Events() EventInformer {
-	return &eventInformer{factory: v.factory, namespace: v.namespace, tweakListOptions: v.tweakListOptions}
-}
-
-// EventBindings returns a EventBindingInformer.
-func (v *version) EventBindings() EventBindingInformer {
-	return &eventBindingInformer{factory: v.factory, namespace: v.namespace, tweakListOptions: v.tweakListOptions}
-}
-
-// EventHandlers returns a EventHandlerInformer.
-func (v *version) EventHandlers() EventHandlerInformer {
-	return &eventHandlerInformer{factory: v.factory, namespace: v.namespace, tweakListOptions: v.tweakListOptions}
 }
 
 // Microservices returns a MicroserviceInformer.

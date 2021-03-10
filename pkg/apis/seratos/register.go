@@ -33,12 +33,6 @@ func addKnownTypes(scheme *runtime.Scheme) error {
 	scheme.AddKnownTypes(SchemeGroupVersion,
 		&Microservice{},
 		&MicroserviceList{},
-		&Event{},
-		&EventList{},
-		&EventBinding{},
-		&EventBindingList{},
-		&EventHandler{},
-		&EventHandlerList{},
 	)
 	return nil
 }

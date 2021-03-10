@@ -20,9 +20,6 @@ import (
 	informers "github.com/Marcos30004347/seratos-api/pkg/generated/informers/externalversions"
 
 	"github.com/Marcos30004347/seratos-api/pkg/admission/initializer"
-	"github.com/Marcos30004347/seratos-api/pkg/admission/plugin/eventbindings"
-	"github.com/Marcos30004347/seratos-api/pkg/admission/plugin/eventhandlers"
-	"github.com/Marcos30004347/seratos-api/pkg/admission/plugin/events"
 	"github.com/Marcos30004347/seratos-api/pkg/admission/plugin/microservices"
 
 	"k8s.io/apiserver/pkg/admission"
@@ -155,15 +152,9 @@ func (o CustomServerOptions) Validate() error {
 
 func (o *CustomServerOptions) Complete() error {
 	// register admission plugins
-	events.Register(o.RecommendedOptions.Admission.Plugins)
-	eventhandlers.Register(o.RecommendedOptions.Admission.Plugins)
-	eventbindings.Register(o.RecommendedOptions.Admission.Plugins)
 	microservices.Register(o.RecommendedOptions.Admission.Plugins)
 
 	// add admisison plugins to the RecommendedPluginOrder
-	o.RecommendedOptions.Admission.RecommendedPluginOrder = append(o.RecommendedOptions.Admission.RecommendedPluginOrder, "Events")
-	o.RecommendedOptions.Admission.RecommendedPluginOrder = append(o.RecommendedOptions.Admission.RecommendedPluginOrder, "EventHandlers")
-	o.RecommendedOptions.Admission.RecommendedPluginOrder = append(o.RecommendedOptions.Admission.RecommendedPluginOrder, "EventBindings")
 	o.RecommendedOptions.Admission.RecommendedPluginOrder = append(o.RecommendedOptions.Admission.RecommendedPluginOrder, "Microservices")
 
 	return nil

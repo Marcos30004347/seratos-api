@@ -29,12 +29,6 @@ func addKnownTypes(scheme *runtime.Scheme) error {
 	scheme.AddKnownTypes(SchemeGroupVersion,
 		&Microservice{},
 		&MicroserviceList{},
-		&Event{},
-		&EventList{},
-		&EventBinding{},
-		&EventBindingList{},
-		&EventHandler{},
-		&EventHandlerList{},
 	)
 
 	metav1.AddToGroupVersion(scheme, SchemeGroupVersion)
