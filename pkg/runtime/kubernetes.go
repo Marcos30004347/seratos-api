@@ -28,7 +28,6 @@ func (c *KubeRuntime) Cleanup() {
 func NewKubernetesRuntime(
 	kubeconfig string,
 	master string,
-	stopCh <-chan struct{},
 ) (*KubeRuntime, error) {
 
 	logs.InitLogs()

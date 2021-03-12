@@ -28,3 +28,9 @@ undeploy:
 
 run:
 	go run . --etcd-servers localhost:2379 --authentication-kubeconfig ~/.kube/config --authorization-kubeconfig ~/.kube/config --kubeconfig ~/.kube/config
+
+sidecar:
+	kubectl apply -f ./artifacts/example/sidecar.yaml
+
+microservice:
+	kubectl apply -f ./artifacts/example/microservice.yaml

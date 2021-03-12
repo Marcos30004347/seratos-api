@@ -33,6 +33,8 @@ func addKnownTypes(scheme *runtime.Scheme) error {
 	scheme.AddKnownTypes(SchemeGroupVersion,
 		&Microservice{},
 		&MicroserviceList{},
+		&Sidecar{},
+		&SidecarList{},
 	)
 	return nil
 }

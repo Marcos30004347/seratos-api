@@ -1,30 +1,51 @@
+# This is a Microservice manifest, it can be used to deploy microservices and as a source of truth for programmers
+# building the service
 apiVersion: seratos.microservice/v1beta1
 kind: Microservice
 metadata:
-  name: serviceA
+  name: microservice
+  labels:
+    app: microservice-example
 spec:
-  container: marcos30004347/consul-sidecar:latest
-  env:
-    - name: PORT
-      value: "8080"
-    - name: TESTE
-      value: "hahahah"
-  topology:
-    proxys:
+  # Deployment info about that service
+  image: nginx:latest
+  replicas: 1
+  description: Teste file used for testing purposes
+
+  sidecars:
+    - sidecar
+
+  # Info contains Info about that service that may be usefful for programmers to read
+  info:
+    connections:
+      # Proxys to the serviceB microservice in the port 80 for tcp protocol and 81 for http2/grpc
       - service: serviceB
+        url: localhost
         ports:
           tcp: 80
           http2: 81
-      - host: 127.0.0.1:2932
+
+      # Proxys to the serviceC microservice in the port 81 for tcp protocol and 82 for http2/grpc
+      - service: serviceC
+        url: localhost
         ports:
           tcp: 82
+          http2: 83
+
+    # Security Info
     security:
       policy: blocks
       blocks:
-          - serviceC
           - serviceD
           - serviceE
       allow:
           - serviceF
           - serviceG
           - serviceH
+
+  # Enviroment variables of the service
+  enviroment:
+    - name: PORT
+      value: "8080"
+    - name: TESTE
+      value: "hahahah"

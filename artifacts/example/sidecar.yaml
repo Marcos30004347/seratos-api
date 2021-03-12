@@ -1,0 +1,24 @@
+apiVersion: seratos.microservice/v1beta1
+kind: Sidecar 
+metadata:
+  name: sidecar
+spec:
+  image: centos
+  command: ["/bin/sh"]
+  args: ["-c", "while true; do echo hello; sleep 10;done"]
+
+  files:
+    - filepath: /tmp/teste0.yml
+      description: Teste file used for testing purposes
+      template: "port: {{ Microservice.Spec.Image }}"
+
+    - filepath: /tmp/teste1.yml
+      description: Teste file used for testing purposes
+      template: "port: {{ Microservice.Spec.Image }}"
+
+  # Enviroment variables for the sidecar
+  enviroment:
+    - name: PORT
+      value: "8080"
+    - name: TESTE
+      value: "hahahah"

@@ -32,6 +32,10 @@ func (c *FakeSeratos) Microservices(namespace string) internalversion.Microservi
 	return &FakeMicroservices{c, namespace}
 }
 
+func (c *FakeSeratos) Sidecars(namespace string) internalversion.SidecarInterface {
+	return &FakeSidecars{c, namespace}
+}
+
 // RESTClient returns a RESTClient that is used to communicate
 // with API server by this client implementation.
 func (c *FakeSeratos) RESTClient() rest.Interface {

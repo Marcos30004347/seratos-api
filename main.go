@@ -4,29 +4,28 @@ import (
 	"os"
 	"sync"
 
-	kubeapiserver "k8s.io/apiserver/pkg/server"
-
 	"github.com/Marcos30004347/seratos-api/pkg/cmd/server"
+	controller "github.com/Marcos30004347/seratos-api/pkg/controllers/microservices"
 	"github.com/Marcos30004347/seratos-api/pkg/runtime"
+	"github.com/Marcos30004347/seratos-api/pkg/utils"
+
+	kubeserver "k8s.io/apiserver/pkg/server"
 
 	"k8s.io/klog"
-
-	"github.com/Marcos30004347/seratos-api/pkg/controllers/controller"
-
-	"github.com/Marcos30004347/seratos-api/pkg/utils"
 )
 
 func main() {
 	flags := utils.ParseFlags()
 
-	stopCh := kubeapiserver.SetupSignalHandler()
+	stopCh := kubeserver.SetupSignalHandler()
 
-	kube, err := runtime.NewKubernetesRuntime(*flags.KubeConfig, *flags.Master, stopCh)
+	kubeRuntime, err := runtime.NewKubernetesRuntime(*flags.KubeConfig, *flags.Master)
+
 	if err != nil {
 		klog.Fatalf("Error building Kube client: %s", err.Error())
 	}
 
-	seratosRuntime, err := runtime.NewSeratosRuntime(kube.RESTConfig)
+	seratosRuntime, err := runtime.NewSeratosRuntime(*flags.KubeConfig, *flags.Master)
 
 	if err != nil {
 		klog.Fatalf("Error building Seratos Runtime: %s", err.Error())
@@ -40,25 +39,30 @@ func main() {
 	command.Flags().AddGoFlagSet(flags.CommandLine)
 
 	msController := controller.NewController(
-		kube,
+		kubeRuntime,
 		seratosRuntime,
 	)
 
-	kube.Run(stopCh)
+	kubeRuntime.Run(stopCh)
 	seratosRuntime.Run(stopCh)
 
 	// controller.ReadEvents(kube)
 
 	var wg sync.WaitGroup
 
+	// Run the API and Controllers
 	wg.Add(2)
 
+	// API Server
 	go func(wg *sync.WaitGroup) {
+		defer wg.Done()
+
 		if err := command.Execute(); err != nil {
 			klog.Fatal(err)
 		}
 	}(&wg)
 
+	// Microservices Controller
 	go func(wg *sync.WaitGroup) {
 		defer wg.Done()
 
@@ -69,6 +73,6 @@ func main() {
 
 	wg.Wait()
 
-	kube.Cleanup()
+	kubeRuntime.Cleanup()
 	seratosRuntime.Cleanup()
 }

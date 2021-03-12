@@ -13,8 +13,9 @@ import (
 
 	customregistry "github.com/Marcos30004347/seratos-api/pkg/registry"
 
-	// storages
 	microservicesstorage "github.com/Marcos30004347/seratos-api/pkg/registry/seratos/microservices"
+	sidecarsstorage "github.com/Marcos30004347/seratos-api/pkg/registry/seratos/sidecars"
+
 	genericapiserver "k8s.io/apiserver/pkg/server"
 )
 
@@ -26,6 +27,11 @@ var (
 	// versions and content types.
 	Codecs = serializer.NewCodecFactory(Scheme)
 )
+
+// GetRuntimeScheme Returns the APIServer runtime scheme
+func GetRuntimeScheme() *runtime.Scheme {
+	return Scheme
+}
 
 func init() {
 	install.Install(Scheme)
@@ -42,10 +48,12 @@ func init() {
 	)
 }
 
+// ExtraConfig is where to put extra Config
 type ExtraConfig struct {
 	// Place your custom config here.
 }
 
+// Config of the APIServer
 type Config struct {
 	GenericConfig *genericapiserver.RecommendedConfig
 	ExtraConfig   ExtraConfig
@@ -61,12 +69,14 @@ type completedConfig struct {
 	ExtraConfig   *ExtraConfig
 }
 
+// CompletedConfig object, this is here to force the Complete method
 type CompletedConfig struct {
 	// Embed a private pointer that cannot be instantiated outside of
 	// this package.
 	*completedConfig
 }
 
+// Complete completes a APIServer Config
 func (cfg *Config) Complete() CompletedConfig {
 	c := completedConfig{
 		cfg.GenericConfig.Complete(),
@@ -81,6 +91,7 @@ func (cfg *Config) Complete() CompletedConfig {
 	return CompletedConfig{&c}
 }
 
+// New creates a new APIServer
 func (c CompletedConfig) New() (*CustomServer, error) {
 	genericServer, err := c.GenericConfig.New("seratos-api", genericapiserver.NewEmptyDelegate())
 
@@ -96,7 +107,20 @@ func (c CompletedConfig) New() (*CustomServer, error) {
 
 	// NewREST from the registry/etcd.go
 	v1beta1storage := map[string]rest.Storage{}
-	v1beta1storage["microservices"] = customregistry.RESTInPeace(microservicesstorage.NewREST(Scheme, c.GenericConfig.RESTOptionsGetter))
+
+	v1beta1storage["microservices"] = customregistry.RESTInPeace(
+		microservicesstorage.NewREST(
+			GetRuntimeScheme(),
+			c.GenericConfig.RESTOptionsGetter,
+		),
+	)
+
+	v1beta1storage["sidecars"] = customregistry.RESTInPeace(
+		sidecarsstorage.NewREST(
+			GetRuntimeScheme(),
+			c.GenericConfig.RESTOptionsGetter,
+		),
+	)
 
 	apiGroupInfo.VersionedResourcesStorageMap["v1beta1"] = v1beta1storage
 

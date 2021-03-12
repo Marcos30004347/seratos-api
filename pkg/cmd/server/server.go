@@ -21,6 +21,7 @@ import (
 
 	"github.com/Marcos30004347/seratos-api/pkg/admission/initializer"
 	"github.com/Marcos30004347/seratos-api/pkg/admission/plugin/microservices"
+	"github.com/Marcos30004347/seratos-api/pkg/admission/plugin/sidecars"
 
 	"k8s.io/apiserver/pkg/admission"
 	"k8s.io/apiserver/pkg/features"
@@ -153,9 +154,11 @@ func (o CustomServerOptions) Validate() error {
 func (o *CustomServerOptions) Complete() error {
 	// register admission plugins
 	microservices.Register(o.RecommendedOptions.Admission.Plugins)
+	sidecars.Register(o.RecommendedOptions.Admission.Plugins)
 
 	// add admisison plugins to the RecommendedPluginOrder
 	o.RecommendedOptions.Admission.RecommendedPluginOrder = append(o.RecommendedOptions.Admission.RecommendedPluginOrder, "Microservices")
+	o.RecommendedOptions.Admission.RecommendedPluginOrder = append(o.RecommendedOptions.Admission.RecommendedPluginOrder, "Sidecars")
 
 	return nil
 }

@@ -55,6 +55,8 @@ func (f *sharedInformerFactory) ForResource(resource schema.GroupVersionResource
 	// Group=seratos.microservice, Version=internalVersion
 	case seratos.SchemeGroupVersion.WithResource("microservices"):
 		return &genericInformer{resource: resource.GroupResource(), informer: f.Seratos().InternalVersion().Microservices().Informer()}, nil
+	case seratos.SchemeGroupVersion.WithResource("sidecars"):
+		return &genericInformer{resource: resource.GroupResource(), informer: f.Seratos().InternalVersion().Sidecars().Informer()}, nil
 
 	}
 

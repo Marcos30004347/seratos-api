@@ -19,3 +19,5 @@ limitations under the License.
 package v1beta1
 
 type MicroserviceExpansion interface{}
+
+type SidecarExpansion interface{}

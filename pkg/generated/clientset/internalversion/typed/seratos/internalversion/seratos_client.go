@@ -26,6 +26,7 @@ import (
 type SeratosInterface interface {
 	RESTClient() rest.Interface
 	MicroservicesGetter
+	SidecarsGetter
 }
 
 // SeratosClient is used to interact with features provided by the seratos.microservice group.
@@ -35,6 +36,10 @@ type SeratosClient struct {
 
 func (c *SeratosClient) Microservices(namespace string) MicroserviceInterface {
 	return newMicroservices(c, namespace)
+}
+
+func (c *SeratosClient) Sidecars(namespace string) SidecarInterface {
+	return newSidecars(c, namespace)
 }
 
 // NewForConfig creates a new SeratosClient for the given config.

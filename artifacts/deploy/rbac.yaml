@@ -25,20 +25,14 @@ rules:
 - apiGroups:
   - seratos.microservice
   resources:
-  - ats
   - microservices
-  - events
-  - eventhandlers
-  - eventbindings
+  - sidecars
   verbs: ["get", "list", "watch", "create", "update", "patch", "delete"]
 - apiGroups:
   - seratos.microservice
   resources:
-  - ats/status
   - microservices/status
-  - events/status
-  - eventhandlers/status
-  - eventbindings/status
+  - sidecars/status
   verbs: ["get", "list", "update", "patch"]
 
 - apiGroups:
@@ -58,9 +52,11 @@ rules:
   - ""
   resources:
   - secrets
+  - events
   verbs: ["get", "list", "watch", "create", "update", "patch", "delete"]
 - apiGroups:
   - ""
   resources:
   - services
+  - events
   verbs: ["get", "list", "watch", "create", "update", "patch", "delete"]

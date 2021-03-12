@@ -26,6 +26,8 @@ import (
 type Interface interface {
 	// Microservices returns a MicroserviceInformer.
 	Microservices() MicroserviceInformer
+	// Sidecars returns a SidecarInformer.
+	Sidecars() SidecarInformer
 }
 
 type version struct {
@@ -42,4 +44,9 @@ func New(f internalinterfaces.SharedInformerFactory, namespace string, tweakList
 // Microservices returns a MicroserviceInformer.
 func (v *version) Microservices() MicroserviceInformer {
 	return &microserviceInformer{factory: v.factory, namespace: v.namespace, tweakListOptions: v.tweakListOptions}
+}
+
+// Sidecars returns a SidecarInformer.
+func (v *version) Sidecars() SidecarInformer {
+	return &sidecarInformer{factory: v.factory, namespace: v.namespace, tweakListOptions: v.tweakListOptions}
 }

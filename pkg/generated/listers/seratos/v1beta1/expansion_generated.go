@@ -25,3 +25,11 @@ type MicroserviceListerExpansion interface{}
 // MicroserviceNamespaceListerExpansion allows custom methods to be added to
 // MicroserviceNamespaceLister.
 type MicroserviceNamespaceListerExpansion interface{}
+
+// SidecarListerExpansion allows custom methods to be added to
+// SidecarLister.
+type SidecarListerExpansion interface{}
+
+// SidecarNamespaceListerExpansion allows custom methods to be added to
+// SidecarNamespaceLister.
+type SidecarNamespaceListerExpansion interface{}

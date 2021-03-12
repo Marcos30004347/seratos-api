@@ -4,6 +4,12 @@ import (
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
+// Enviroment defines enviroment varialbles for the microservices
+type Enviroment struct {
+	Name  string
+	Value string
+}
+
 // +genclient
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 
@@ -17,32 +23,29 @@ type Microservice struct {
 
 // MicroserviceSpec define the specification of the microservice object
 type MicroserviceSpec struct {
-	Container string
-	Replicas  int32
-	Env       []Env
+	Image      string
+	Sidecars   []string
+	Replicas   int32
+	Enviroment []Enviroment
+	Info       MicroserviceInfo
 }
 
-// Env defines enviroment varialbles for the microservices
-type Env struct {
-	Name  string
-	Value string
+// MicroserviceInfo defines the topology for a service
+type MicroserviceInfo struct {
+	Connections []MicroserviceConnection
+	Secutiry    MicroserviceSecutiry
 }
 
-// MicroserviceTopology defines the topology for a service
-type MicroserviceTopology struct {
-	Proxys   []MicroserviceProxy
-	Secutiry MicroserviceSecutiry
-}
-
-// MicroserviceProxy defines some proxys for the service
-type MicroserviceProxy struct {
+// MicroserviceConnection defines some proxys for the service
+type MicroserviceConnection struct {
 	Service string
 	Host    string
-	Ports   MicroserviceProxyPorts
+	Ports   ProxyPorts
+	URL     string
 }
 
-// MicroserviceProxyPorts defines the proxy ports
-type MicroserviceProxyPorts struct {
+// ProxyPorts defines the proxy ports
+type ProxyPorts struct {
 	TCP   int32
 	HTTP2 int32
 }
@@ -62,4 +65,41 @@ type MicroserviceList struct {
 	metav1.ListMeta
 
 	Items []Microservice
+}
+
+// +genclient
+// +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
+
+// Sidecar Resource
+type Sidecar struct {
+	metav1.TypeMeta
+	metav1.ObjectMeta
+
+	Spec SidecarSpec
+}
+
+// SidecarSpec Specification
+type SidecarSpec struct {
+	Image      string
+	Command    []string
+	Args       []string
+	Files      []SidecarFiles
+	Enviroment []Enviroment
+}
+
+// SidecarFiles is the files created by the sidecar
+type SidecarFiles struct {
+	Filepath    string
+	Description string
+	Template    string
+}
+
+// +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
+
+// SidecarList is a list of Sidecar objects.
+type SidecarList struct {
+	metav1.TypeMeta
+	metav1.ListMeta
+
+	Items []Sidecar
 }

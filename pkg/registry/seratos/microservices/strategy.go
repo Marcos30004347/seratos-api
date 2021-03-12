@@ -22,11 +22,11 @@ func NewStrategy(typer runtime.ObjectTyper) MicroservicesStrategy {
 // GetAttrs returns labels.Set, fields.Set, the presence of Initializers if any
 // and error in case the given runtime.Object is not a Bar
 func GetAttrs(obj runtime.Object) (labels.Set, fields.Set, error) {
-	apiserver, ok := obj.(*seratos.Microservice)
+	microservice, ok := obj.(*seratos.Microservice)
 	if !ok {
 		return nil, nil, fmt.Errorf("given object is not a Microservice")
 	}
-	return labels.Set(apiserver.ObjectMeta.Labels), SelectableFields(apiserver), nil
+	return labels.Set(microservice.ObjectMeta.Labels), SelectableFields(microservice), nil
 }
 
 // MatchMicroservices is the filter used by the generic etcd backend to watch events

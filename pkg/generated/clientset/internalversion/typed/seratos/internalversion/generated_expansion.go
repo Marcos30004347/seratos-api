@@ -19,3 +19,5 @@ limitations under the License.
 package internalversion
 
 type MicroserviceExpansion interface{}
+
+type SidecarExpansion interface{}

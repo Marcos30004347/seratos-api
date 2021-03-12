@@ -1,11 +1,10 @@
-package microservices
+package sidecars
 
 import (
 	"context"
 	"fmt"
 	"io"
 
-	"k8s.io/apimachinery/pkg/api/errors"
 	"k8s.io/apiserver/pkg/admission"
 
 	"github.com/Marcos30004347/seratos-api/pkg/admission/initializer"
@@ -17,7 +16,7 @@ import (
 
 // Register registers a plugin
 func Register(plugins *admission.Plugins) {
-	plugins.Register("Microservices", func(config io.Reader) (admission.Interface, error) {
+	plugins.Register("Sidecars", func(config io.Reader) (admission.Interface, error) {
 		return New()
 	})
 }
@@ -25,8 +24,7 @@ func Register(plugins *admission.Plugins) {
 // The Plugin structure
 type Plugin struct {
 	*admission.Handler
-	microserviceLister listers.MicroserviceLister
-	sidecarLister      listers.SidecarLister
+	lister listers.SidecarLister
 }
 
 var _ = initializer.WantsSeratosInformerFactory(&Plugin{})
@@ -34,25 +32,11 @@ var _ = initializer.WantsSeratosInformerFactory(&Plugin{})
 // Admit ensures that the object in-flight is of kind Foo.
 // In addition checks that the bar are known.
 func (d *Plugin) Admit(ctx context.Context, a admission.Attributes, oi admission.ObjectInterfaces) error {
-	if a.GetKind().GroupKind() != seratos.Kind("Microservice") {
+	if a.GetKind().GroupKind() != seratos.Kind("Sidecar") {
 		return nil
 	}
 	if !d.WaitForReady() {
 		return admission.NewForbidden(a, fmt.Errorf("not yet ready to handle request"))
-	}
-
-	obj := a.GetObject()
-
-	microservice := obj.(*seratos.Microservice)
-
-	for _, sidecar := range microservice.Spec.Sidecars {
-		if _, err := d.sidecarLister.Sidecars(a.GetNamespace()).Get(sidecar); err != nil && errors.IsNotFound(err) {
-			return errors.NewForbidden(
-				a.GetResource().GroupResource(),
-				a.GetName(),
-				fmt.Errorf("Unknown Sidecar: %s, you may not have register it, or it may be in another namespace", sidecar),
-			)
-		}
 	}
 
 	return nil
@@ -61,19 +45,15 @@ func (d *Plugin) Admit(ctx context.Context, a admission.Attributes, oi admission
 // SetSeratosInformerFactory gets Lister from SharedInformerFactory.
 // The lister knows how to lists Bar.
 func (d *Plugin) SetSeratosInformerFactory(f informers.SharedInformerFactory) {
-	d.microserviceLister = f.Seratos().V1beta1().Microservices().Lister()
-	d.sidecarLister = f.Seratos().V1beta1().Sidecars().Lister()
+	d.lister = f.Seratos().V1beta1().Sidecars().Lister()
 
 	d.SetReadyFunc(f.Seratos().V1beta1().Sidecars().Informer().HasSynced)
 }
 
 // ValidateInitialization checks whether the plugin was correctly initialized.
 func (d *Plugin) ValidateInitialization() error {
-	if d.microserviceLister == nil {
-		return fmt.Errorf("Microservices Plugin missing microservices policy lister")
-	}
-	if d.sidecarLister == nil {
-		return fmt.Errorf("Microservices Plugin missing sidecars policy lister")
+	if d.lister == nil {
+		return fmt.Errorf("Sidecars Plugin missing policy lister")
 	}
 	return nil
 }
