@@ -27,6 +27,7 @@ func NewREST(scheme *runtime.Scheme, optsGetter generic.RESTOptionsGetter) (*reg
 
 		TableConvertor: rest.NewDefaultTableConvertor(seratos.Resource("microservices")),
 	}
+
 	options := &generic.StoreOptions{RESTOptions: optsGetter, AttrFunc: GetAttrs}
 	if err := store.CompleteWithOptions(options); err != nil {
 		return nil, err

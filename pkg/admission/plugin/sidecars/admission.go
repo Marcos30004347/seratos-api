@@ -35,6 +35,7 @@ func (d *Plugin) Admit(ctx context.Context, a admission.Attributes, oi admission
 	if a.GetKind().GroupKind() != seratos.Kind("Sidecar") {
 		return nil
 	}
+
 	if !d.WaitForReady() {
 		return admission.NewForbidden(a, fmt.Errorf("not yet ready to handle request"))
 	}

@@ -10,6 +10,8 @@ type Flags struct {
 	AuthenticationKubeConfig *string
 	AuthorizationKubeConfig  *string
 	SecurePort               *string
+	TLSCertFile              *string
+	TLSPrivateKey            *string
 	CommandLine              *flag.FlagSet
 }
 
@@ -21,6 +23,8 @@ func ParseFlags() *Flags {
 		EtcdServers:              flag.String("etcd-servers", "", ""),
 		AuthenticationKubeConfig: flag.String("authentication-kubeconfig", "", ""),
 		AuthorizationKubeConfig:  flag.String("authorization-kubeconfig", "", ""),
+		TLSCertFile:              flag.String("tls-cert-file", "", ""),
+		TLSPrivateKey:            flag.String("tls-private-key-file", "", ""),
 		SecurePort:               flag.String("secure-port", "", ""),
 		CommandLine:              flag.CommandLine,
 	}

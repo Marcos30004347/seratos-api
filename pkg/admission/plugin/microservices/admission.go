@@ -31,12 +31,13 @@ type Plugin struct {
 
 var _ = initializer.WantsSeratosInformerFactory(&Plugin{})
 
-// Admit ensures that the object in-flight is of kind Foo.
-// In addition checks that the bar are known.
+// Admit ensures that the object in-flight is of kind Microservice.
+// In addition checks that the sidecar are known.
 func (d *Plugin) Admit(ctx context.Context, a admission.Attributes, oi admission.ObjectInterfaces) error {
 	if a.GetKind().GroupKind() != seratos.Kind("Microservice") {
 		return nil
 	}
+
 	if !d.WaitForReady() {
 		return admission.NewForbidden(a, fmt.Errorf("not yet ready to handle request"))
 	}
@@ -50,7 +51,7 @@ func (d *Plugin) Admit(ctx context.Context, a admission.Attributes, oi admission
 			return errors.NewForbidden(
 				a.GetResource().GroupResource(),
 				a.GetName(),
-				fmt.Errorf("Unknown Sidecar: %s, you may not have register it, or it may be in another namespace", sidecar),
+				fmt.Errorf("Unknown Sidecar: %s, you may have not deployed, or it may be in another namespace", sidecar),
 			)
 		}
 	}

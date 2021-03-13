@@ -1,3 +1,6 @@
 seratos-api
 default.etcd
 apiserver.local.config
+tls.crt
+tls.key
+manifests/secure/

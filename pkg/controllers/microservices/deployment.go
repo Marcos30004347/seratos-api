@@ -54,7 +54,7 @@ func createDeployment(microservice *v1beta1.Microservice, sidecars []*v1beta1.Si
 			filepath := strings.Join(path, "/")
 
 			filecontent := parseFileContent(file.Template, microservice)
-			echos += "echo '" + filecontent + "' >> " + file.Filepath + ";"
+			echos += "echo \"" + filecontent + "\" >> " + file.Filepath + ";"
 
 			if !used[filepath] {
 				used[filepath] = true

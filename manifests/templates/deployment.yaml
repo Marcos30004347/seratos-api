@@ -1,0 +1,51 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: seratos-api
+  namespace: seratos
+  labels:
+    apiserver: 'true'
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      apiserver: 'true'
+  template:
+    metadata:
+      labels:
+        apiserver: 'true'
+    spec:
+      serviceAccountName: apiserver
+      containers:
+      - name: etcd
+        image: quay.io/coreos/etcd:v3.2.24
+        resources:
+          limits:
+            cpu: "1"
+            memory: "200Mi"
+          requests:
+            cpu: "0.5"
+      - name: seratos-api
+        image: marcos30004347/seratos-api:latest
+        resources:
+          limits:
+            cpu: "1"
+            memory: "200Mi"
+          requests:
+            cpu: "0.5"
+        imagePullPolicy: Never
+        args:
+        - --etcd-servers=http://localhost:2379
+        - --cert-dir=/tmp/certs
+        - --secure-port=8443
+        - --tls-cert-file=/var/run/apiserver/serving-cert/tls.crt
+        - --tls-private-key-file=/var/run/apiserver/serving-cert/tls.key
+        - --v=4
+        volumeMounts:
+        - name: serving-cert
+          readOnly: true
+          mountPath: /var/run/apiserver/serving-cert
+      volumes:
+      - name: serving-cert
+        secret:
+          secretName: serving-cert

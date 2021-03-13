@@ -1,0 +1,13 @@
+apiVersion: apiregistration.k8s.io/v1
+kind: APIService
+metadata:
+  name: v1beta1.seratos.microservice
+spec:
+  insecureSkipTLSVerify: true
+  group: seratos.microservice
+  groupPriorityMinimum: 1000
+  versionPriority: 15
+  service:
+    name: api
+    namespace: seratos
+  version: v1beta1

@@ -9,8 +9,8 @@ metadata:
 spec:
   # Deployment info about that service
   image: nginx:latest
-  replicas: 1
   description: Teste file used for testing purposes
+  replicas: 1
 
   sidecars:
     - sidecar

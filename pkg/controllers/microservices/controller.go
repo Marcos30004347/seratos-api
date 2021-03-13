@@ -1,13 +1,10 @@
 package controller
 
 import (
-	"context"
 	"fmt"
 	"time"
 
 	corev1 "k8s.io/api/core/v1"
-	"k8s.io/apimachinery/pkg/api/errors"
-	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	utilruntime "k8s.io/apimachinery/pkg/util/runtime"
 	typedcorev1 "k8s.io/client-go/kubernetes/typed/core/v1"
 
@@ -81,77 +78,16 @@ func (c *Controller) enqueueResource(obj interface{}) {
 }
 
 func (c *Controller) controllerHandler(event MicroserviceEvent) error {
-
 	switch event.EventType {
 	case CREATED:
-		obj := event.Created.Microservice
-		microservice, err := c.microserviceLister.Microservices(obj.Namespace).Get(obj.Name)
-
-		if err != nil {
-			if errors.IsNotFound(err) {
-				utilruntime.HandleError(fmt.Errorf("foo '%s' in work queue no longer exists", obj.Namespace+"/"+obj.Name))
-				return nil
-			}
-			return err
-		}
-
-		var sidecars []*v1beta1.Sidecar
-
-		fmt.Printf("%#v\n", microservice.Spec)
-		for _, sidecarname := range microservice.Spec.Sidecars {
-			fmt.Printf("%s\n", sidecarname)
-			fmt.Printf("%s\n", microservice.Namespace)
-
-			sidecar, err := c.sidecarsLister.Sidecars(microservice.Namespace).Get(
-				sidecarname,
-			)
-
-			fmt.Printf("%#v", sidecar)
-			fmt.Printf("%#v", sidecar)
-			fmt.Printf("%#v", sidecar)
-			fmt.Printf("%#v", sidecar)
-
-			if err != nil {
-				if errors.IsNotFound(err) {
-					utilruntime.HandleError(fmt.Errorf("sidecars '%s' in microservice no longer exists", obj.Namespace+"/"+obj.Name))
-					return nil
-				}
-				return err
-			}
-
-			sidecars = append(sidecars, sidecar)
-		}
-
-		fmt.Printf("%#v\n", sidecars)
-		fmt.Printf("%#v\n", sidecars)
-		fmt.Printf("%#v\n", sidecars)
-		fmt.Printf("%#v\n", sidecars)
-
-		dp := createDeployment(microservice, sidecars)
-		fmt.Println(dp)
-
-		deployment, err := c.kubeRuntime.Clientset.AppsV1().Deployments(microservice.Namespace).Create(context.TODO(), dp, metav1.CreateOptions{})
-
-		if err != nil {
-			utilruntime.HandleError(err)
-			return err
-		}
-
-		fmt.Println(deployment)
-
-		c.recorder.Event(microservice, corev1.EventTypeNormal, "Created", "Microservice Created")
-		break
+		return microserviceCreated(c, event.Created.Microservice)
 	case UPDATED:
-		microservice := event.Updated.OldMicroservice
-		c.recorder.Event(microservice, corev1.EventTypeNormal, "Updated", "Microservice Updated")
-		break
+		return microserviceUpdated(c, event.Updated.OldMicroservice, event.Updated.NewMicroservice)
 	case DELETED:
-		microservice := event.Deleted.Microservice
-		c.recorder.Event(microservice, corev1.EventTypeNormal, "Deleted", "Microservice Deleted")
-		break
+		return microserviceDeleted(c, event.Deleted.Microservice)
+	default:
+		return nil
 	}
-
-	return nil
 }
 
 func (c *Controller) processNextWorkItem() bool {

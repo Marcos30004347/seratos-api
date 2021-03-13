@@ -14,6 +14,11 @@ import (
 	"k8s.io/apiserver/pkg/storage/names"
 )
 
+type MicroservicesStrategy struct {
+	runtime.ObjectTyper
+	names.NameGenerator
+}
+
 // NewStrategy creates and returns a MicroservicesStrategy instance
 func NewStrategy(typer runtime.ObjectTyper) MicroservicesStrategy {
 	return MicroservicesStrategy{typer, names.SimpleNameGenerator}
@@ -42,11 +47,6 @@ func MatchMicroservices(label labels.Selector, field fields.Selector) storage.Se
 // SelectableFields returns a field set that represents the object.
 func SelectableFields(obj *seratos.Microservice) fields.Set {
 	return generic.ObjectMetaFieldsSet(&obj.ObjectMeta, true)
-}
-
-type MicroservicesStrategy struct {
-	runtime.ObjectTyper
-	names.NameGenerator
 }
 
 func (MicroservicesStrategy) NamespaceScoped() bool {
