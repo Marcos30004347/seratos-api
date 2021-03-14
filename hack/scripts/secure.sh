@@ -1,6 +1,8 @@
 # !/bin/bash
 
-openssl req -new -x509 -subj "/CN=api.seratos.svc" -nodes -newkey rsa:4096 -keyout tls.key -out tls.crt -days 3650
+openssl genrsa -out tls.key 4096
+openssl req -new -sha256 -out tls.csr -key tls.key -config hack/config/ssl.conf 
+openssl x509 -req -sha256 -days 3650 -in tls.csr -signkey tls.key -out tls.crt -extensions req_ext -extfile hack/config/ssl.conf 
 
 # Get template cpmtemt
 secret_manifest=$(cat ./manifests/templates/cert-secret.yaml.template)
@@ -11,12 +13,12 @@ cert=$(cat ./tls.crt | base64)
 key=$(cat ./tls.key | base64)
 
 # Get secret manifest content
-secret_manifest=$(echo "${secret_manifest//CERT/\"$cert\"}")
-secret_manifest=$(echo "${secret_manifest//KEY/\"$key\"}")
+secret_manifest=$(echo "${secret_manifest//CERT/$cert}")
+secret_manifest=$(echo "${secret_manifest//KEY/$key}")
 
 # Get apiservice manifest content
-apiservice_manifest=$(echo "${apiservice_manifest//CERT/\"$cert\"}")
-apiservice_manifest=$(echo "${apiservice_manifest//KEY/\"$key\"}")
+apiservice_manifest=$(echo "${apiservice_manifest//CERT/$cert}")
+apiservice_manifest=$(echo "${apiservice_manifest//KEY/$key}")
 
 if [ -d ./manifests/deploy/secure ]; then rm -rf ./manifests/deploy/secure; fi;
 

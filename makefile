@@ -18,11 +18,11 @@ codegen:
 	./hack/scripts/codegen.sh
 
 deploy:
-	kubectl apply -f ./manifests/deploy/ns.yaml
-	kubectl apply -f ./manifests/deploy/
+	kubectl apply -f ./manifests/deploy/insecure/ns.yaml
+	kubectl apply -f ./manifests/deploy/insecure/
 
 undeploy:
-	kubectl delete -f ./manifests/deploy/
+	kubectl delete -f ./manifests/deploy/insecure/
 
 deploy-secure:
 	kubectl apply -f ./manifests/deploy/secure/ns.yaml

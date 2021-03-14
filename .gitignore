@@ -2,5 +2,6 @@ seratos-api
 default.etcd
 apiserver.local.config
 tls.crt
+tls.csr
 tls.key
-manifests/secure/
+manifests/deploy/secure

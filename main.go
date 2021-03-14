@@ -46,6 +46,8 @@ func main() {
 	kubeRuntime.Run(stopCh)
 	seratosRuntime.Run(stopCh)
 
+	// controller.ReadEvents(kube)
+
 	var wg sync.WaitGroup
 
 	// Run the API and Controllers

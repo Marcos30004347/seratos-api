@@ -19,8 +19,20 @@ spec:
       containers:
       - name: etcd
         image: quay.io/coreos/etcd:v3.2.24
+        resources:
+          limits:
+            cpu: "1"
+            memory: "200Mi"
+          requests:
+            cpu: "0.5"
       - name: seratos-api
         image: marcos30004347/seratos-api:latest
+        resources:
+          limits:
+            cpu: "1"
+            memory: "200Mi"
+          requests:
+            cpu: "0.5"
         imagePullPolicy: Never
         args:
         - --etcd-servers=http://localhost:2379
